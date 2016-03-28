@@ -1,17 +1,11 @@
 'use strict';
-import React, {
-  AppRegistry,
-  Component,
-  StyleSheet,
-  Text,
-  View,
-  Navigator
-} from 'react-native';
+import React, { AppRegistry, Navigator } from 'react-native';
 import {App} from './src/app';
-import {NavBar} from './src/app';
+import {NavBar} from './src/components/navbar';
 
 const hopePing = () => (
   <Navigator
+    style={{flex: 1}}
     initialRoute={{component: App, name: 'Hope Ping'}}
     navigationBar={<NavBar />}
     renderScene={(route, navigator) => {
