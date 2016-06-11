@@ -1,6 +1,10 @@
 module.exports = {
-    "extends": "airbnb",
-    "plugins": [
-        "react"
-    ]
+  "parser": "babel-eslint",
+  "extends": "airbnb",
+  "plugins": [
+      "react"
+  ],
+  "rules": {
+    "no-return-assign": 0,
+  }
 };

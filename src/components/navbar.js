@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 export const NavBar = ({ navigator }) => (
   <View style={styles.navbar}>
     {navigator.getCurrentRoutes().length > 1 ? (
