@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, WebView, Modal } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { LinkButton } from '../components/LinkButton';
+import { HomeScene } from './HomeScene';
 import { connectFeathers } from '../connect/connectFeathers';
-import { WINDOW_WIDTH, WINDOW_HEIGHT } from '../constants';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +32,7 @@ class LoginScene extends Component {
     };
     this.setAuthUrl = ::this.setAuthUrl;
     this.handleWebViewChange = ::this.handleWebViewChange;
+    this.authenticate = ::this.authenticate;
   }
 
   setAuthUrl(destination) {
@@ -42,13 +43,25 @@ class LoginScene extends Component {
     });
   }
 
+  authenticate(token) {
+    this.props.feathers.authenticate({
+      type: 'token',
+      token,
+    })
+    .then(() => this.props.navigator.push({ name: 'HomeScene' }));
+  }
+
   handleWebViewChange(url) {
-    if (url.url.indexOf('/success') !== -1) {
-      CookieManager.getAll(cookie => console.log(cookie));
+    if (url.url.indexOf('/success') > -1) {
+      CookieManager.getAll((error, cookie) => this.authenticate(cookie['feathers-jwt'].value));
+      this.setState({ webViewVisible: false });
     }
   }
 
   render() {
+    if (this.props.feathers.authenticate()) {
+      return <HomeScene navigator={this.props.navigator} />;
+    }
     return this.state.notWebView ? (
       <View style={styles.container}>
         <Text style={styles.header}>
