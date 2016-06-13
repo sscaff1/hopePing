@@ -1,4 +1,4 @@
-import React, { PropTypes, Component } from 'react';
+import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import feathers from 'feathers/client';
 import hooks from 'feathers-hooks';
@@ -11,30 +11,25 @@ if (! window.navigator || ! window.navigator.hasOwnProperty('userAgent')) {
 
 const io = require('socket.io-client/socket.io');
 
-export function connectFeathers(ConnectComponent) {
+const defaultOptions = {
+  timeout: 5000,
+  endpoint: 'http://localhost:3030',
+};
+
+export function connectFeathers(ConnectComponent, options = defaultOptions) {
   class FeathersConnector extends Component {
-    static propTypes = {
-      endpoint: PropTypes.string,
-      timeout: PropTypes.number,
-    };
-
-    static defaultProps = {
-      timeout: 5000,
-      endpoint: 'http://localhost:3030',
-    };
-
     constructor(props, context) {
       super(props, context);
       this.state = {
         connected: false,
       };
-      const options = {
+      const ioOptions = {
         transports: ['websocket'],
         forceNew: true,
-        reconnectionDelay: props.timeout,
+        reconnectionDelay: options.timeout,
         reconnection: true,
       };
-      const socket = io(props.endpoint, options);
+      const socket = io(options.endpoint, ioOptions);
       this.app = feathers()
         .configure(socketio(socket))
         .configure(hooks())
@@ -50,6 +45,7 @@ export function connectFeathers(ConnectComponent) {
           connected: true,
         });
       });
+
       this.app.io.on('disconnect', () => {
         this.setState({
           connected: false,
@@ -58,7 +54,10 @@ export function connectFeathers(ConnectComponent) {
     }
 
     render() {
-      return <ConnectComponent {...this.props} feathers={this.app} />;
+      if (this.state.connected) {
+        return <ConnectComponent {...this.props} feathers={this.app} />;
+      }
+      return null;
     }
   }
 
