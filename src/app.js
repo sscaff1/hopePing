@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { Navigator, Linking } from 'react-native';
+import { Navigator, Linking, View, StyleSheet } from 'react-native';
 import {
   DonateScene,
   HomeScene,
   LoginScene,
+  NewsScene,
 } from './scenes';
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    marginTop: 20,
+  },
+});
 
 export class App extends Component {
   constructor(props, context) {
@@ -26,7 +34,8 @@ export class App extends Component {
   }
 
   renderScene(route, navigator) {
-    switch (route.name) {
+    const routeName = typeof route === 'string' ? route : route.name;
+    switch (routeName) {
       case 'DonateScene':
         return (
           <DonateScene
@@ -47,6 +56,13 @@ export class App extends Component {
             navigator={navigator}
           />
         );
+      case 'NewsScene':
+        return (
+          <NewsScene
+            navigator={navigator}
+            {...route.passProps}
+          />
+      );
       default:
         return null;
     }
@@ -54,10 +70,12 @@ export class App extends Component {
 
   render() {
     return (
-      <Navigator
-        initialRoute={{ name: 'LoginScene' }}
-        renderScene={this.renderScene}
-      />
+      <View style={styles.wrap}>
+        <Navigator
+          initialRoute={{ name: 'LoginScene' }}
+          renderScene={this.renderScene}
+        />
+      </View>
     );
   }
 }

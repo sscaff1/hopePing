@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, WebView, Modal } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { LinkButton } from '../components/LinkButton';
-import { HomeScene } from './HomeScene';
 import { connectFeathers } from '../connect/connectFeathers';
 
 const styles = StyleSheet.create({
@@ -29,10 +28,21 @@ class LoginScene extends Component {
       notWebView: true,
       authUrl: '',
       webViewVisible: false,
+      showLogin: false,
     };
     this.setAuthUrl = ::this.setAuthUrl;
     this.handleWebViewChange = ::this.handleWebViewChange;
     this.authenticate = ::this.authenticate;
+  }
+
+  componentWillMount() {
+    const { feathers } = this.props;
+    feathers.authenticate()
+    .then(() => this.props.navigator.resetTo('HomeScene'))
+    .catch(() => {
+      feathers.logout();
+      this.setState({ showLogin: true });
+    });
   }
 
   setAuthUrl(destination) {
@@ -44,11 +54,13 @@ class LoginScene extends Component {
   }
 
   authenticate(token) {
-    this.props.feathers.authenticate({
+    const { feathers } = this.props;
+    feathers.authenticate({
       type: 'token',
       token,
     })
-    .then(() => this.props.navigator.push({ name: 'HomeScene' }));
+    .then(() => this.props.navigator.resetTo('HomeScene'))
+    .catch(() => feathers.logout());
   }
 
   handleWebViewChange(url) {
@@ -59,10 +71,8 @@ class LoginScene extends Component {
   }
 
   render() {
-    if (this.props.feathers.authenticate()) {
-      return <HomeScene navigator={this.props.navigator} />;
-    }
-    return this.state.notWebView ? (
+    const { notWebView, showLogin, webViewVisible } = this.state;
+    return showLogin && notWebView ? (
       <View style={styles.container}>
         <Text style={styles.header}>
           Hope Ping
@@ -83,7 +93,7 @@ class LoginScene extends Component {
     ) : (
       <Modal
         animationType="slide"
-        visible={this.state.webViewVisible}
+        visible={webViewVisible}
       >
         <WebView
           onNavigationStateChange={this.handleWebViewChange}
