@@ -33,7 +33,7 @@ export function connectFeathers(ConnectComponent, options = defaultOptions) {
       this.app = feathers()
         .configure(socketio(socket))
         .configure(hooks())
-        // Use AsyncStorage to store our login toke
+        // Use AsyncStorage to store our login token
         .configure(authentication({
           storage: AsyncStorage,
         }));

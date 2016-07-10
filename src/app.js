@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navigator, Linking, View, StyleSheet } from 'react-native';
+import { Navigator, Linking, StyleSheet } from 'react-native';
 import {
   DonateScene,
   HomeScene,
@@ -10,7 +10,6 @@ import {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    marginTop: 20,
   },
 });
 
@@ -70,12 +69,11 @@ export class App extends Component {
 
   render() {
     return (
-      <View style={styles.wrap}>
-        <Navigator
-          initialRoute={{ name: 'LoginScene' }}
-          renderScene={this.renderScene}
-        />
-      </View>
+      <Navigator
+        initialRoute={{ name: 'LoginScene' }}
+        renderScene={this.renderScene}
+        sceneStyle={styles.wrap}
+      />
     );
   }
 }

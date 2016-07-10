@@ -8,6 +8,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
+    marginTop: 20,
   },
   center: {
     alignItems: 'center',
