@@ -4,17 +4,19 @@ import { WINDOW_WIDTH } from '../constants';
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: 'blue',
-    padding: 20,
+    backgroundColor: 'rgba(225, 231, 206, 0.7)',
+    paddingVertical: 20,
+    paddingHorizontal: 5,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
     borderRadius: 10,
-    width: WINDOW_WIDTH * 3 / 4,
+    width: WINDOW_WIDTH / 2 * 1.1,
   },
   label: {
-    color: 'white',
-    fontSize: 20,
+    fontFamily: 'JosefinSlab',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 

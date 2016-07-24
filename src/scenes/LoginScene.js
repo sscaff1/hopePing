@@ -1,18 +1,32 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Text, WebView, Modal } from 'react-native';
+import { StyleSheet, Text, WebView, Modal, Image } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { LinkButton } from '../components/LinkButton';
 import { connectFeathers } from '../connect/connectFeathers';
 
 const styles = StyleSheet.create({
-  container: {
+  wrap: {
     flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
   },
+  headerText: {
+    backgroundColor: 'transparent',
+    fontFamily: 'JosefinSlab',
+    fontWeight: 'bold',
+  },
   header: {
-    fontSize: 30,
-    marginBottom: 30,
+    fontSize: 50,
+    fontFamily: 'Pacifico',
+  },
+  subheading: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 50,
+    fontFamily: 'Pacifico',
   },
 });
 
@@ -25,7 +39,6 @@ class LoginScene extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      notWebView: true,
       authUrl: '',
       webViewVisible: false,
       showLogin: false,
@@ -48,7 +61,6 @@ class LoginScene extends Component {
   setAuthUrl(destination) {
     this.setState({
       authUrl: `http://localhost:3030/auth/${destination}`,
-      notWebView: false,
       webViewVisible: true,
     });
   }
@@ -70,12 +82,30 @@ class LoginScene extends Component {
     }
   }
 
+  renderWebView() {
+    const { webViewVisible } = this.state;
+    return (
+      <Modal
+        animationType="slide"
+        visible={webViewVisible}
+      >
+        <WebView
+          onNavigationStateChange={this.handleWebViewChange}
+          source={{ uri: this.state.authUrl }}
+        />
+      </Modal>
+    );
+  }
+
   render() {
-    const { notWebView, showLogin, webViewVisible } = this.state;
-    return showLogin && notWebView ? (
-      <View style={styles.container}>
-        <Text style={styles.header}>
+    const { showLogin } = this.state;
+    return showLogin && (
+      <Image style={styles.wrap} source={require('../img/hope.png')}>
+        <Text style={[styles.headerText, styles.header]}>
           Hope Ping
+        </Text>
+        <Text style={[styles.headerText, styles.subheading]}>
+          Giving Hope to Those in Need
         </Text>
         <LinkButton
           onPress={() => this.setAuthUrl('facebook')}
@@ -89,17 +119,8 @@ class LoginScene extends Component {
           onPress={() => this.setAuthUrl('linkedin')}
           label="Login With LinkedIn"
         />
-      </View>
-    ) : (
-      <Modal
-        animationType="slide"
-        visible={webViewVisible}
-      >
-        <WebView
-          onNavigationStateChange={this.handleWebViewChange}
-          source={{ uri: this.state.authUrl }}
-        />
-      </Modal>
+        {this.renderWebView()}
+      </Image>
     );
   }
 }

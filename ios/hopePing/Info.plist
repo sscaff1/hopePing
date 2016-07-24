@@ -44,6 +44,9 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Pacifico.ttf</string>
+		<string>JosefinSlab-Bold.ttf</string>
+		<string>JosefinSlab-Regular.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>
 		<string>FontAwesome.ttf</string>

@@ -9,28 +9,37 @@ import {
 const styles = StyleSheet.create({
   navbar: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-end',
     justifyContent: 'space-between',
-    height: 50,
-    backgroundColor: 'blue',
+    height: 60,
+    backgroundColor: '#008080',
     paddingTop: 10,
+    paddingBottom: 10,
     marginBottom: 10,
   },
   title: {
     fontSize: 22,
     color: 'white',
     fontWeight: '900',
+    fontFamily: 'JosefinSlab',
   },
   button: {
-    height: 50,
+    height: 60,
     width: 100,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   sideLabel: {
-    fontSize: 18,
+    fontSize: 24,
     color: 'white',
     fontWeight: '700',
+    fontFamily: 'JosefinSlab',
+  },
+  donate: {
+    color: '#C1B5C6',
+    fontWeight: 'bold',
+    fontFamily: 'Pacifico',
+    top: 5,
   },
 });
 
@@ -44,7 +53,7 @@ export function Navbar({ routeBack, title, routeForward, rightLabel }) {
         {title}
       </Text>
       <TouchableOpacity style={styles.button} onPress={routeForward}>
-        <Text style={styles.sideLabel}>
+        <Text style={[styles.sideLabel, styles.donate]}>
           {rightLabel}
         </Text>
       </TouchableOpacity>

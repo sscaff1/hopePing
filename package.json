@@ -11,9 +11,10 @@
     "feathers-hooks": "^1.5.4",
     "feathers-socketio": "^1.4.1",
     "moment": "^2.13.0",
-    "react": "^15.1.0",
-    "react-native": "^0.28.0",
+    "react": "^15.2.1",
+    "react-native": "^0.30.0",
     "react-native-cookies": "^1.0.0",
+    "react-native-keyboard-aware-scroll-view": "^0.1.2",
     "react-native-vector-icons": "^2.0.3",
     "socket.io-client": "^1.4.6"
   },

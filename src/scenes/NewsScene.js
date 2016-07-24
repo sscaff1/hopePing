@@ -21,10 +21,12 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
+    fontFamily: 'JosefinSlab',
   },
   snippet: {
     fontSize: 15,
     marginBottom: 10,
+    fontFamily: 'JosefinSlab',
   },
   image: {
     marginVertical: 10,
@@ -43,6 +45,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'gray',
   },
+  button: {
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#008080',
+  },
+  buttonLabel: {
+    fontSize: 25,
+    fontFamily: 'Pacifico',
+    color: '#C1B5C6',
+  },
 });
 
 export class NewsScene extends Component {
@@ -57,24 +70,41 @@ export class NewsScene extends Component {
       articles: new ListView.DataSource({
         rowHasChanged: (r1, r2) => r1 !== r2,
       }),
+      articleRows: [],
+      page: 0,
       loading: true,
     };
+    this.getMoreNews = this.getMoreNews.bind(this);
+    this.donate = this.donate.bind(this);
   }
 
   componentWillMount() {
+    this.getMoreNews();
+  }
+
+  getMoreNews() {
     const { topic } = this.props;
+    const { page, articleRows } = this.state;
     const baseUrl = 'https://api.nytimes.com/svc/search/v2/articlesearch.json';
-    const query = `?api-key=644c9545b0684d46949ac8ee9e15b697&q=${topic}&sort=newest`;
+    const query = `?api-key=644c9545b0684d46949ac8ee9e15b697&q=${topic}&page=${page}&sort=newest`;
     const urlToFetch = baseUrl + query;
     fetch(urlToFetch)
     .then(results => results.json())
-    .then(response =>
+    .then(response => {
+      const articles = articleRows.concat(response.response.docs);
       this.setState({
-        articles: this.state.articles.cloneWithRows(response.response.docs),
+        articleRows: articles,
+        articles: this.state.articles.cloneWithRows(articles),
         loading: false,
-      })
-    )
+        page: page + 1,
+      });
+    })
     .catch(error => console.log(error));
+  }
+
+  donate() {
+    const { navigator, topic } = this.props;
+    navigator.push({ name: 'DonateScene', passProps: { cause: topic } });
   }
 
   renderRow(article) {
@@ -107,12 +137,19 @@ export class NewsScene extends Component {
         <Navbar
           title={topic}
           routeBack={navigator.pop}
-          routeForward={() => navigator.push('DonateScene')}
+          routeForward={this.donate}
         />
         <ListView
           dataSource={this.state.articles}
           renderRow={this.renderRow}
+          onEndReached={this.getMoreNews}
+          onEndReachedThreshold={600}
         />
+        <TouchableOpacity onPress={this.donate} style={styles.button}>
+          <Text style={styles.buttonLabel}>
+            Donate
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }

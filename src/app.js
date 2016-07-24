@@ -10,6 +10,7 @@ import {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
+    backgroundColor: 'white',
   },
 });
 
@@ -40,6 +41,7 @@ export class App extends Component {
           <DonateScene
             navigator={navigator}
             routeBack={() => navigator.pop()}
+            {...route.passProps}
           />
         );
       case 'HomeScene':
