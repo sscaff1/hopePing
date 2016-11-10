@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import {
-  ScrollView,
   View,
   StyleSheet,
   TextInput,
@@ -8,8 +7,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Navbar } from '../components/Navbar';
-import { connectFeathers } from '../connect/connectFeathers';
+import { connectFeathers } from '../connect';
 
 const styles = StyleSheet.create({
   container: {
@@ -84,16 +82,13 @@ InputLabel.propTypes = {
 
 class DonateScene extends Component {
   static propTypes = {
-    navigator: PropTypes.object.isRequired,
     feathers: PropTypes.object.isRequired,
-    cause: PropTypes.string.isRequired,
   };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
       name: '',
-      email: '',
       cc: '',
       cvc: '',
       expiration: '',
@@ -116,89 +111,73 @@ class DonateScene extends Component {
   }
 
   render() {
-    const { navigator, cause } = this.props;
-    const { name, email, cc, expiration, cvc, amount, comment } = this.state;
+    const { name, cc, expiration, cvc, amount, comment } = this.state;
     return (
-      <View style={styles.container}>
-        <Navbar
-          title="Donate"
-          routeBack={navigator.pop}
-          routeForward={() => console.log('on donate')}
-          rightLabel=""
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps
+        keyboardDismissMode="none"
+        contentContainerStyle={styles.form}
+      >
+        <InputLabel>Name</InputLabel>
+        <TextInput
+          onChangeText={text => this.changeText('name', text)}
+          value={name}
+          style={styles.input}
+          placeholder="Name on your Credit Card"
         />
-        <KeyboardAwareScrollView contentContainerStyle={styles.form}>
-          <Text style={styles.cause}>
-            Cause: {cause}
-          </Text>
-          <InputLabel>Name</InputLabel>
-          <TextInput
-            onChangeText={text => this.changeText('name', text)}
-            value={name}
-            style={styles.input}
-            placeholder="Name on your Credit Card"
-          />
-          <InputLabel>Email</InputLabel>
-          <TextInput
-            onChangeText={text => this.changeText('email', text)}
-            value={email}
-            style={styles.input}
-            placeholder="Email Address"
-            keyboardType="email-address"
-          />
-          <InputLabel>Card Number</InputLabel>
-          <TextInput
-            onChangeText={text => this.changeText('cc', text)}
-            keyboardType="numeric"
-            value={cc}
-            style={styles.input}
-            placeholder="Credit Card Number"
-          />
-          <View style={styles.row}>
-            <View style={[styles.rowColumn, styles.left]}>
-              <InputLabel>Expiration</InputLabel>
-              <TextInput
-                onChangeText={text => this.changeText('expiration', text)}
-                keyboardType="numeric"
-                value={expiration}
-                style={styles.input}
-                placeholder="MM/YY"
-              />
-            </View>
-            <View style={[styles.rowColumn, styles.right]}>
-              <InputLabel>CVC</InputLabel>
-              <TextInput
-                onChangeText={text => this.changeText('cvc', text)}
-                keyboardType="numeric"
-                value={cvc}
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="****"
-              />
-            </View>
+        <InputLabel>Card Number</InputLabel>
+        <TextInput
+          onChangeText={text => this.changeText('cc', text)}
+          keyboardType="numeric"
+          value={cc}
+          style={styles.input}
+          placeholder="Credit Card Number"
+        />
+        <View style={styles.row}>
+          <View style={[styles.rowColumn, styles.left]}>
+            <InputLabel>Expiration</InputLabel>
+            <TextInput
+              onChangeText={text => this.changeText('expiration', text)}
+              keyboardType="numeric"
+              value={expiration}
+              style={styles.input}
+              placeholder="MM/YY"
+            />
           </View>
-          <InputLabel>Amount</InputLabel>
-          <TextInput
-            onChangeText={text => this.changeText('amount', text)}
-            keyboardType="numeric"
-            value={amount}
-            style={styles.input}
-            placeholder="Amount To Donate"
-          />
-          <InputLabel>Comment/Special Cause</InputLabel>
-          <TextInput
-            multiline={true}
-            onChangeText={text => this.changeText('comment', text)}
-            value={comment}
-            style={[styles.input, styles.multiline]}
-            placeholder="Let us know about your donation"
-          />
-          <TouchableOpacity onPress={this.submitForm} style={styles.button}>
-            <Text style={styles.buttonLabel}>
-              Donate
-            </Text>
-          </TouchableOpacity>
-        </KeyboardAwareScrollView>
-      </View>
+          <View style={[styles.rowColumn, styles.right]}>
+            <InputLabel>CVC</InputLabel>
+            <TextInput
+              onChangeText={text => this.changeText('cvc', text)}
+              keyboardType="numeric"
+              value={cvc}
+              secureTextEntry
+              style={styles.input}
+              placeholder="****"
+            />
+          </View>
+        </View>
+        <InputLabel>Amount</InputLabel>
+        <TextInput
+          onChangeText={text => this.changeText('amount', text)}
+          keyboardType="numeric"
+          value={amount}
+          style={styles.input}
+          placeholder="Amount To Donate"
+        />
+        <InputLabel>Comment/Special Cause</InputLabel>
+        <TextInput
+          multiline
+          onChangeText={text => this.changeText('comment', text)}
+          value={comment}
+          style={[styles.input, styles.multiline]}
+          placeholder="Let us know about your donation"
+        />
+        <TouchableOpacity onPress={this.submitForm} style={styles.button}>
+          <Text style={styles.buttonLabel}>
+            Donate
+          </Text>
+        </TouchableOpacity>
+      </KeyboardAwareScrollView>
     );
   }
 }

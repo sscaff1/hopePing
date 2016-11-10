@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Navigator, Linking, StyleSheet } from 'react-native';
 import {
-  DonateScene,
   HomeScene,
   LoginScene,
-  NewsScene,
 } from './scenes';
 
 const styles = StyleSheet.create({
@@ -14,7 +12,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export class App extends Component {
+export default class App extends Component {
   constructor(props, context) {
     super(props, context);
     this.renderScene = ::this.renderScene;
@@ -22,7 +20,6 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    Linking.addEventListener('url', this.handleOpenUrl);
   }
 
   componentWillUnmount() {
@@ -36,14 +33,6 @@ export class App extends Component {
   renderScene(route, navigator) {
     const routeName = typeof route === 'string' ? route : route.name;
     switch (routeName) {
-      case 'DonateScene':
-        return (
-          <DonateScene
-            navigator={navigator}
-            routeBack={() => navigator.pop()}
-            {...route.passProps}
-          />
-        );
       case 'HomeScene':
         return (
           <HomeScene
@@ -57,13 +46,6 @@ export class App extends Component {
             navigator={navigator}
           />
         );
-      case 'NewsScene':
-        return (
-          <NewsScene
-            navigator={navigator}
-            {...route.passProps}
-          />
-      );
       default:
         return null;
     }

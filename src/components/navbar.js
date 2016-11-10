@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Navbar({ routeBack, title, routeForward, rightLabel }) {
+export default function Navbar({ routeBack, title, routeForward, rightLabel }) {
   return (
     <View style={styles.navbar}>
       <TouchableOpacity style={styles.button} onPress={routeBack}>

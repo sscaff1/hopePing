@@ -3,20 +3,15 @@ import { AsyncStorage } from 'react-native';
 import feathers from 'feathers/client';
 import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio/client';
+import io from 'socket.io-client/socket.io';
 import authentication from 'feathers-authentication/client';
-
-if (! window.navigator || ! window.navigator.hasOwnProperty('userAgent')) {
-  Object.assign(window, { navigator: { userAgent: 'ReactNative' } });
-}
-
-const io = require('socket.io-client/socket.io');
 
 const defaultOptions = {
   timeout: 5000,
   endpoint: 'http://localhost:3030',
 };
 
-export function connectFeathers(ConnectComponent, options = defaultOptions) {
+export default function connectFeathers(ConnectComponent, options = defaultOptions) {
   class FeathersConnector extends Component {
     constructor(props, context) {
       super(props, context);
