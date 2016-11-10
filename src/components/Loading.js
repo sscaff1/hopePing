@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function Loading() {
+export default function Loading() {
   return (
     <View style={styles.container}>
       <ActivityIndicator size="large" />

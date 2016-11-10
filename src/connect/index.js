@@ -1,0 +1,1 @@
+export connectFeathers from './connectFeathers';

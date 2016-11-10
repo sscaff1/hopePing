@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     borderRadius: 10,
-    width: WINDOW_WIDTH / 2 * 1.1,
+    width: (WINDOW_WIDTH * 1.1) / 2,
   },
   label: {
     fontFamily: 'JosefinSlab',
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export function LinkButton({ label, onPress }) {
+export default function LinkButton({ label, onPress }) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.button}>
       <Text style={styles.label}>

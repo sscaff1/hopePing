@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet, Text, WebView, Modal, Image } from 'react-native';
 import CookieManager from 'react-native-cookies';
-import { LinkButton } from '../components/LinkButton';
-import { connectFeathers } from '../connect/connectFeathers';
+import { LinkButton } from '../components';
+import { connectFeathers } from '../connect';
 
 const styles = StyleSheet.create({
   wrap: {
