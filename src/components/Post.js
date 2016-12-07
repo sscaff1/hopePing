@@ -15,13 +15,13 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   title: {
-    fontSize: 20,
-    fontFamily: 'JosefinSlab',
+    fontSize: 15,
+    fontFamily: 'Open Sans',
   },
   snippet: {
-    fontSize: 15,
+    fontSize: 12,
     marginBottom: 10,
-    fontFamily: 'JosefinSlab',
+    fontFamily: 'Open Sans',
   },
   imageContainer: {
     height: WINDOW_WIDTH / 2,

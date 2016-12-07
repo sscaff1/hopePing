@@ -3,8 +3,8 @@ import { AsyncStorage } from 'react-native';
 import feathers from 'feathers/client';
 import hooks from 'feathers-hooks';
 import socketio from 'feathers-socketio/client';
-import io from 'socket.io-client/socket.io';
 import authentication from 'feathers-authentication/client';
+import io from 'socket.io-client';
 
 const defaultOptions = {
   timeout: 5000,

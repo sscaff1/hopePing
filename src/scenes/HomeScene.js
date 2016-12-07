@@ -16,13 +16,16 @@ const styles = StyleSheet.create({
   scrollview: {
     paddingTop: 10,
   },
+  header: {
+    fontFamily: 'IM Fell French Canon SC',
+  },
 });
 
 export default function HomeScene() {
   return (
     <View style={styles.container}>
       <Header>
-        <Title>The New Orleans Mission</Title>
+        <Title style={styles.header}>The New Orleans Mission</Title>
       </Header>
       <ScrollableTabView
         style={styles.scrollview}
@@ -31,8 +34,8 @@ export default function HomeScene() {
       >
         <NewsScene tabLabel={{ name: 'News', icon: 'newspaper-o' }} />
         <SocialScene tabLabel={{ name: 'Social', icon: 'facebook' }} />
-        <DonateScene tabLabel={{ name: 'Donate', icon: 'hotel' }} />
-        <VolunteerScene tabLabel={{ name: 'Volunteer', icon: 'plus-square' }} />
+        <DonateScene tabLabel={{ name: 'Donate', icon: 'money' }} />
+        <VolunteerScene tabLabel={{ name: 'Volunteer', icon: 'hand-o-up' }} />
         <AboutScene tabLabel={{ name: 'About Us', icon: 'info' }} />
       </ScrollableTabView>
     </View>
