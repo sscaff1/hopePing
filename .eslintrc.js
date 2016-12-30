@@ -1,18 +1,16 @@
 module.exports = {
-  "extends": "airbnb",
-  "parser": "babel-eslint",
-  "globals": {
-    "fetch": true,
-  },
-  "plugins": [
-    "react",
-    "react-native"
-  ],
-  "rules": {
-    "no-return-assign": 0,
-    "prefer-default-export": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "class-methods-use-this": 0,
-    "forbid-prop-types": [0],
-  }
+    "extends": "airbnb",
+    "parser": "babel-eslint",
+    "installedESLint": true,
+    "plugins": [
+        "react",
+        "react-native",
+        "jsx-a11y",
+        "import"
+    ],
+    "rules": {
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "no-use-before-define": 0, // stick to the common practice of defining styles after the component
+      "react/forbid-prop-types": [0] // allows generic propTypes
+    }
 };
