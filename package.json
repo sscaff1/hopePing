@@ -6,7 +6,9 @@
     "start": "node node_modules/react-native/local-cli/cli.js start"
   },
   "rnpm": {
-    "assets": ["fonts"]
+    "assets": [
+      "fonts"
+    ]
   },
   "dependencies": {
     "feathers": "=2.0.1",
@@ -15,13 +17,14 @@
     "feathers-socketio": "=1.4.1",
     "moment": "=2.13.0",
     "native-base": "=0.5.13",
-    "react": "^15.3.2",
+    "react": "~15.3.2",
     "react-native": "=0.36.1",
     "react-native-cookies": "=2.0.0",
     "react-native-keyboard-aware-scroll-view": "=0.2.2",
     "react-native-scrollable-tab-view": "=0.6.0",
     "react-native-vector-icons": "=3.0.0",
-    "socket.io-client": "^1.7.1"
+    "socket.io-client": "^1.7.1",
+    "tipsi-stripe": "^1.4.0"
   },
   "devDependencies": {
     "babel-jest": "17.0.2",
