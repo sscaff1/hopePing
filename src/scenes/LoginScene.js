@@ -1,34 +1,11 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, Text, WebView, Modal, Image } from 'react-native';
+import { StyleSheet, View, Text, WebView, Modal, Image, AsyncStorage } from 'react-native';
 import CookieManager from 'react-native-cookies';
-import { LinkButton } from '../components';
+import { Header, Title, Button, Icon } from 'native-base';
+import { LinkButton, Loading } from '../components';
 import { connectFeathers } from '../connect';
 
-const styles = StyleSheet.create({
-  wrap: {
-    flex: 1,
-    width: null,
-    height: null,
-    resizeMode: 'cover',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  headerText: {
-    backgroundColor: 'transparent',
-    fontFamily: 'JosefinSlab',
-    fontWeight: 'bold',
-  },
-  header: {
-    fontSize: 50,
-    fontFamily: 'Pacifico',
-  },
-  subheading: {
-    textAlign: 'center',
-    fontSize: 20,
-    marginBottom: 50,
-    fontFamily: 'Pacifico',
-  },
-});
+const HOME_BACKGROUND = require('../img/hope.png');
 
 class LoginScene extends Component {
   static propTypes = {
@@ -51,7 +28,10 @@ class LoginScene extends Component {
   componentWillMount() {
     const { feathers } = this.props;
     feathers.authenticate()
-    .then(() => this.props.navigator.resetTo('HomeScene'))
+    .then((user) => {
+      AsyncStorage.setItem('user', JSON.stringify(user.data));
+      this.props.navigator.resetTo('HomeScene');
+    })
     .catch(() => {
       feathers.logout();
       this.setState({ showLogin: true });
@@ -67,7 +47,7 @@ class LoginScene extends Component {
 
   authenticate(token) {
     const { feathers } = this.props;
-    feathers.authenticate({
+    return feathers.authenticate({
       type: 'token',
       token,
     })
@@ -77,8 +57,10 @@ class LoginScene extends Component {
 
   handleWebViewChange(url) {
     if (url.url.indexOf('/success') > -1) {
-      CookieManager.getAll((error, cookie) => this.authenticate(cookie['feathers-jwt'].value));
-      this.setState({ webViewVisible: false });
+      CookieManager.getAll((error, cookie) => {
+        this.authenticate(cookie['feathers-jwt'].value);
+        this.setState({ webViewVisible: false });
+      });
     }
   }
 
@@ -89,10 +71,20 @@ class LoginScene extends Component {
         animationType="slide"
         visible={webViewVisible}
       >
-        <WebView
-          onNavigationStateChange={this.handleWebViewChange}
-          source={{ uri: this.state.authUrl }}
-        />
+        <View style={styles.container}>
+          <Header iconRight>
+            <Title>Social Login</Title>
+            <Button transparent onPress={() => this.setState({ webViewVisible: false })}>
+              <Icon name="ios-close" />
+            </Button>
+          </Header>
+          <WebView
+            startInLoadingState
+            onNavigationStateChange={this.handleWebViewChange}
+            source={{ uri: this.state.authUrl }}
+            renderLoading={() => <Loading />}
+          />
+        </View>
       </Modal>
     );
   }
@@ -100,7 +92,7 @@ class LoginScene extends Component {
   render() {
     const { showLogin } = this.state;
     return showLogin && (
-      <Image style={styles.wrap} source={require('../img/hope.png')}>
+      <Image style={styles.wrap} source={HOME_BACKGROUND}>
         <Text style={[styles.headerText, styles.header]}>
           Hope Ping
         </Text>
@@ -124,5 +116,35 @@ class LoginScene extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    flex: 1,
+  },
+  headerText: {
+    backgroundColor: 'transparent',
+    fontFamily: 'JosefinSlab',
+    fontWeight: 'bold',
+  },
+  header: {
+    fontSize: 50,
+    fontFamily: 'Pacifico',
+  },
+  subheading: {
+    textAlign: 'center',
+    fontSize: 20,
+    marginBottom: 50,
+    fontFamily: 'Pacifico',
+  },
+});
+
 
 export default connectFeathers(LoginScene);

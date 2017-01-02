@@ -5,68 +5,11 @@ import {
   TextInput,
   Text,
   TouchableOpacity,
+  AsyncStorage,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { STRIPE_SERVICE } from '../services';
+import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants';
 import { connectFeathers } from '../connect';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  form: {
-    paddingHorizontal: 10,
-  },
-  label: {
-    fontSize: 20,
-    marginBottom: 5,
-    fontFamily: 'JosefinSlab',
-  },
-  input: {
-    padding: 5,
-    fontSize: 18,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'lightgray',
-    height: 40,
-    marginBottom: 10,
-    backgroundColor: '#E2F0F0',
-    fontFamily: 'JosefinSlab',
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  rowColumn: {
-    flex: 1,
-  },
-  right: {
-    marginLeft: 5,
-  },
-  left: {
-    marginRight: 5,
-  },
-  multiline: {
-    height: 120,
-  },
-  button: {
-    alignSelf: 'center',
-    paddingVertical: 20,
-    paddingHorizontal: 40,
-    backgroundColor: 'lightblue',
-    borderRadius: 5,
-  },
-  buttonLabel: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'JosefinSlab',
-  },
-  cause: {
-    fontSize: 30,
-    alignSelf: 'center',
-    textAlign: 'center',
-    fontFamily: 'JosefinSlab',
-  },
-});
 
 function InputLabel({ children }) {
   return (
@@ -88,7 +31,7 @@ class DonateScene extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      name: '',
+      zip: '',
       cc: '',
       cvc: '',
       expiration: '',
@@ -96,6 +39,7 @@ class DonateScene extends Component {
       comment: '',
     };
     this.changeText = this.changeText.bind(this);
+    this.validateForm = this.validateForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -105,26 +49,19 @@ class DonateScene extends Component {
     });
   }
 
+  validateForm() {
+
+  }
+
   submitForm() {
-    // call to stripe service
-    console.log(this.props.feathers);
+    fetch('https://js.stripe.com/v2/')
+    .then(stripe => console.log(stripe));
   }
 
   render() {
-    const { name, cc, expiration, cvc, amount, comment } = this.state;
+    const { zip, cc, expiration, cvc, amount, comment } = this.state;
     return (
-      <KeyboardAwareScrollView
-        keyboardShouldPersistTaps
-        keyboardDismissMode="none"
-        contentContainerStyle={styles.form}
-      >
-        <InputLabel>Name</InputLabel>
-        <TextInput
-          onChangeText={text => this.changeText('name', text)}
-          value={name}
-          style={styles.input}
-          placeholder="Name on your Credit Card"
-        />
+      <View style={styles.container}>
         <InputLabel>Card Number</InputLabel>
         <TextInput
           onChangeText={text => this.changeText('cc', text)}
@@ -137,11 +74,13 @@ class DonateScene extends Component {
           <View style={[styles.rowColumn, styles.left]}>
             <InputLabel>Expiration</InputLabel>
             <TextInput
-              onChangeText={text => this.changeText('expiration', text)}
+              onChangeText={(text) => {
+                this.changeText('expiration', text);
+              }}
               keyboardType="numeric"
               value={expiration}
               style={styles.input}
-              placeholder="MM/YY"
+              placeholder="MMYYYY"
             />
           </View>
           <View style={[styles.rowColumn, styles.right]}>
@@ -156,6 +95,14 @@ class DonateScene extends Component {
             />
           </View>
         </View>
+        <InputLabel>Billing Zip Code</InputLabel>
+        <TextInput
+          onChangeText={text => this.changeText('zip', text)}
+          keyboardType="numeric"
+          value={zip}
+          style={styles.input}
+          placeholder="Zip Code"
+        />
         <InputLabel>Amount</InputLabel>
         <TextInput
           onChangeText={text => this.changeText('amount', text)}
@@ -177,9 +124,64 @@ class DonateScene extends Component {
             Donate
           </Text>
         </TouchableOpacity>
-      </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    paddingHorizontal: 15,
+  },
+  label: {
+    fontSize: 15,
+    marginBottom: 5,
+    color: 'purple',
+  },
+  input: {
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    fontSize: 14,
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: 'gray',
+    height: WINDOW_HEIGHT / 18,
+    marginBottom: 10,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  rowColumn: {
+    flex: 1,
+  },
+  right: {
+    marginLeft: 5,
+  },
+  left: {
+    marginRight: 5,
+  },
+  multiline: {
+    height: 120,
+  },
+  button: {
+    alignSelf: 'center',
+    justifyContent: 'center',
+    height: 40,
+    width: WINDOW_WIDTH / 2,
+    backgroundColor: 'green',
+    borderRadius: 5,
+  },
+  buttonLabel: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  cause: {
+    fontSize: 30,
+    alignSelf: 'center',
+    textAlign: 'center',
+  },
+});
 
 export default connectFeathers(DonateScene);

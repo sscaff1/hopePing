@@ -9,18 +9,6 @@ import VolunteerScene from './VolunteerScene';
 import SocialScene from './SocialScene';
 import { TabBar } from '../components';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollview: {
-    paddingTop: 10,
-  },
-  header: {
-    fontFamily: 'IM Fell French Canon SC',
-  },
-});
-
 export default function HomeScene() {
   return (
     <View style={styles.container}>
@@ -41,3 +29,15 @@ export default function HomeScene() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scrollview: {
+    paddingTop: 10,
+  },
+  header: {
+    fontFamily: 'IM Fell French Canon SC',
+  },
+});
