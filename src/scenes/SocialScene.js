@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { ListView } from 'react-native';
+import { connectFeathers } from 'react-native-feathers-connector';
 import { Loading, Post } from '../components';
-import { connectFeathers } from '../connect';
 import { FEED_SERVICE } from '../services';
 
 class SocialScene extends Component {

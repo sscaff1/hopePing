@@ -1,128 +1,70 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import {
-  View,
   StyleSheet,
-  TextInput,
-  Text,
+  View,
   TouchableOpacity,
-  AsyncStorage,
+  Text,
 } from 'react-native';
-import { STRIPE_SERVICE } from '../services';
-import { WINDOW_HEIGHT, WINDOW_WIDTH } from '../constants';
-import { connectFeathers } from '../connect';
+import { CreditCardInput } from 'react-native-credit-card-input';
+import { WINDOW_WIDTH } from '../constants';
 
-function InputLabel({ children }) {
-  return (
-    <Text style={styles.label}>
-      {children}
-    </Text>
-  );
-}
 
-InputLabel.propTypes = {
-  children: PropTypes.string.isRequired,
-};
-
-class DonateScene extends Component {
-  static propTypes = {
-    feathers: PropTypes.object.isRequired,
+export default class DonateScene extends Component {
+  state = {
+    valid: false,
+    formData: '',
+  }
+  onChange = (formData) => {
+    /* eslint no-console: 0 */
+    if (formData.valid) {
+      this.setState({
+        valid: true,
+        formData: JSON.stringify(formData.values),
+      }, () => console.log(this.state));
+    }
   };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      zip: '',
-      cc: '',
-      cvc: '',
-      expiration: '',
-      amount: '',
-      comment: '',
-    };
-    this.changeText = this.changeText.bind(this);
-    this.validateForm = this.validateForm.bind(this);
-    this.submitForm = this.submitForm.bind(this);
-  }
+  onFocus = (field) => {
+    /* eslint no-console: 0 */
+    // console.log(field);
+  };
 
-  changeText(field, text) {
-    this.setState({
-      [field]: text,
-    });
-  }
-
-  validateForm() {
-
-  }
-
-  submitForm() {
-    fetch('https://js.stripe.com/v2/')
-    .then(stripe => console.log(stripe));
+  validatePostalCode = (code) => {
+    const regex = /\d{5}/g;
+    if (!code) {
+      return 'incomplete';
+    }
+    const stringPostal = code.toString();
+    if (stringPostal.match(regex)) {
+      return 'valid';
+    } else if (stringPostal.length > 0) {
+      return 'invalid';
+    }
+    return 'incomplete';
   }
 
   render() {
-    const { zip, cc, expiration, cvc, amount, comment } = this.state;
+    const { valid } = this.state;
     return (
       <View style={styles.container}>
-        <InputLabel>Card Number</InputLabel>
-        <TextInput
-          onChangeText={text => this.changeText('cc', text)}
-          keyboardType="numeric"
-          value={cc}
-          style={styles.input}
-          placeholder="Credit Card Number"
+        <CreditCardInput
+          autoFocus
+          requiresName
+          requiresCVC
+          requiresPostalCode
+          labelStyle={styles.label}
+          inputStyle={styles.input}
+          validColor={'black'}
+          invalidColor={'red'}
+          placeholderColor={'darkgray'}
+          cardScale={0.8}
+          validatePostalCode={this.validatePostalCode}
+
+          onFocus={this.onFocus}
+          onChange={this.onChange}
         />
-        <View style={styles.row}>
-          <View style={[styles.rowColumn, styles.left]}>
-            <InputLabel>Expiration</InputLabel>
-            <TextInput
-              onChangeText={(text) => {
-                this.changeText('expiration', text);
-              }}
-              keyboardType="numeric"
-              value={expiration}
-              style={styles.input}
-              placeholder="MMYYYY"
-            />
-          </View>
-          <View style={[styles.rowColumn, styles.right]}>
-            <InputLabel>CVC</InputLabel>
-            <TextInput
-              onChangeText={text => this.changeText('cvc', text)}
-              keyboardType="numeric"
-              value={cvc}
-              secureTextEntry
-              style={styles.input}
-              placeholder="****"
-            />
-          </View>
-        </View>
-        <InputLabel>Billing Zip Code</InputLabel>
-        <TextInput
-          onChangeText={text => this.changeText('zip', text)}
-          keyboardType="numeric"
-          value={zip}
-          style={styles.input}
-          placeholder="Zip Code"
-        />
-        <InputLabel>Amount</InputLabel>
-        <TextInput
-          onChangeText={text => this.changeText('amount', text)}
-          keyboardType="numeric"
-          value={amount}
-          style={styles.input}
-          placeholder="Amount To Donate"
-        />
-        <InputLabel>Comment/Special Cause</InputLabel>
-        <TextInput
-          multiline
-          onChangeText={text => this.changeText('comment', text)}
-          value={comment}
-          style={[styles.input, styles.multiline]}
-          placeholder="Let us know about your donation"
-        />
-        <TouchableOpacity onPress={this.submitForm} style={styles.button}>
-          <Text style={styles.buttonLabel}>
-            Donate
-          </Text>
+        <TouchableOpacity style={[styles.submitButton, !valid && styles.disabled]}>
+          <Text style={styles.submit}>Donate</Text>
         </TouchableOpacity>
       </View>
     );
@@ -131,57 +73,31 @@ class DonateScene extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 15,
+    marginTop: 10,
   },
   label: {
-    fontSize: 15,
-    marginBottom: 5,
-    color: 'purple',
+    color: 'black',
+    fontSize: 12,
   },
   input: {
-    paddingVertical: 5,
-    paddingHorizontal: 15,
-    fontSize: 14,
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: 'gray',
-    height: WINDOW_HEIGHT / 18,
-    marginBottom: 10,
+    fontSize: 16,
+    color: 'black',
   },
-  row: {
-    flexDirection: 'row',
+  submitButton: {
+    height: 60,
+    width: WINDOW_WIDTH * 0.8,
     alignItems: 'center',
-  },
-  rowColumn: {
-    flex: 1,
-  },
-  right: {
-    marginLeft: 5,
-  },
-  left: {
-    marginRight: 5,
-  },
-  multiline: {
-    height: 120,
-  },
-  button: {
-    alignSelf: 'center',
     justifyContent: 'center',
-    height: 40,
-    width: WINDOW_WIDTH / 2,
     backgroundColor: 'green',
-    borderRadius: 5,
-  },
-  buttonLabel: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center',
-  },
-  cause: {
-    fontSize: 30,
     alignSelf: 'center',
-    textAlign: 'center',
+    marginTop: 10,
+    borderRadius: 20,
+  },
+  submit: {
+    color: 'white',
+    fontSize: 20,
+  },
+  disabled: {
+    backgroundColor: 'lightgray',
   },
 });
-
-export default connectFeathers(DonateScene);

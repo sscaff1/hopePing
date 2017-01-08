@@ -2,8 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, WebView, Modal, Image, AsyncStorage } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { Header, Title, Button, Icon } from 'native-base';
+import { connectFeathers } from 'react-native-feathers-connector';
 import { LinkButton, Loading } from '../components';
-import { connectFeathers } from '../connect';
 
 const HOME_BACKGROUND = require('../img/hope.png');
 
@@ -13,49 +13,53 @@ class LoginScene extends Component {
     feathers: PropTypes.object.isRequired,
   }
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      authUrl: '',
-      webViewVisible: false,
-      showLogin: false,
-    };
-    this.setAuthUrl = ::this.setAuthUrl;
-    this.handleWebViewChange = ::this.handleWebViewChange;
-    this.authenticate = ::this.authenticate;
-  }
+  state = {
+    authUrl: '',
+    webViewVisible: false,
+    showLogin: true,
+  };
 
   componentWillMount() {
     const { feathers } = this.props;
-    feathers.authenticate()
-    .then((user) => {
-      AsyncStorage.setItem('user', JSON.stringify(user.data));
-      this.props.navigator.resetTo('HomeScene');
-    })
-    .catch(() => {
-      feathers.logout();
-      this.setState({ showLogin: true });
+    AsyncStorage.getItem('jwt', (error, result) => {
+      if (result) {
+        return feathers.passport.verifyJWT(result)
+        .then(payload => feathers.service('users').get(payload.userId))
+        .then((user) => {
+          feathers.set('user', user);
+          this.props.navigator.resetTo('HomeScene');
+        })
+        .catch(() => this.logout());
+      }
+      return this.logout();
     });
   }
 
-  setAuthUrl(destination) {
+  setAuthUrl = (destination) => {
     this.setState({
       authUrl: `http://localhost:3030/auth/${destination}`,
       webViewVisible: true,
     });
   }
 
-  authenticate(token) {
+  authenticate = (token) => {
     const { feathers } = this.props;
-    return feathers.authenticate({
-      type: 'token',
-      token,
+    AsyncStorage.setItem('jwt', token);
+    return feathers.passport.verifyJWT(token)
+    .then(payload => feathers.service('users').get(payload.userId))
+    .then((user) => {
+      feathers.set('user', user);
+      this.props.navigator.resetTo('HomeScene');
     })
-    .then(() => this.props.navigator.resetTo('HomeScene'))
     .catch(() => feathers.logout());
   }
 
-  handleWebViewChange(url) {
+  logout = () => {
+    this.props.feathers.logout();
+    this.setState({ showLogin: true });
+  }
+
+  handleWebViewChange = (url) => {
     if (url.url.indexOf('/success') > -1) {
       CookieManager.getAll((error, cookie) => {
         this.authenticate(cookie['feathers-jwt'].value);
@@ -64,7 +68,7 @@ class LoginScene extends Component {
     }
   }
 
-  renderWebView() {
+  renderWebView = () => {
     const { webViewVisible } = this.state;
     return (
       <Modal

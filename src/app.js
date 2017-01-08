@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Navigator, Linking, StyleSheet } from 'react-native';
+import { FeathersWrapper } from 'react-native-feathers-connector';
 import {
   HomeScene,
   LoginScene,
@@ -53,11 +54,13 @@ export default class App extends Component {
 
   render() {
     return (
-      <Navigator
-        initialRoute={{ name: 'LoginScene' }}
-        renderScene={this.renderScene}
-        sceneStyle={styles.wrap}
-      />
+      <FeathersWrapper wsEndpoint="http://localhost:3030" timeout={2000}>
+        <Navigator
+          initialRoute={{ name: 'LoginScene' }}
+          renderScene={this.renderScene}
+          sceneStyle={styles.wrap}
+        />
+      </FeathersWrapper>
     );
   }
 }
