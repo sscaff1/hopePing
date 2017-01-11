@@ -1,37 +1,11 @@
 import React, { Component } from 'react';
-import { Navigator, Linking, StyleSheet } from 'react-native';
+import { Navigator, StyleSheet } from 'react-native';
 import { FeathersWrapper } from 'react-native-feathers-connector';
-import {
-  HomeScene,
-  LoginScene,
-} from './scenes';
-
-const styles = StyleSheet.create({
-  wrap: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-});
+import { HomeScene, LoginScene } from './scenes';
+import { ENDPOINT, TIMEOUT } from './constants';
 
 export default class App extends Component {
-  constructor(props, context) {
-    super(props, context);
-    this.renderScene = ::this.renderScene;
-    this.handleOpenUrl = ::this.handleOpenUrl;
-  }
-
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-    Linking.removeEventListener('url', this.handleOpenUrl);
-  }
-
-  handleOpenUrl() {
-    console.log(arguments);
-  }
-
-  renderScene(route, navigator) {
+  renderScene = (route, navigator) => {
     const routeName = typeof route === 'string' ? route : route.name;
     switch (routeName) {
       case 'HomeScene':
@@ -54,7 +28,7 @@ export default class App extends Component {
 
   render() {
     return (
-      <FeathersWrapper wsEndpoint="http://localhost:3030" timeout={2000}>
+      <FeathersWrapper wsEndpoint={ENDPOINT} timeout={TIMEOUT}>
         <Navigator
           initialRoute={{ name: 'LoginScene' }}
           renderScene={this.renderScene}
@@ -64,3 +38,10 @@ export default class App extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  wrap: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+});

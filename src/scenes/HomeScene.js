@@ -20,7 +20,7 @@ export default function HomeScene() {
         renderTabBar={props => <TabBar {...props} />}
         tabBarPosition="bottom"
       >
-        <NewsScene tabLabel={{ name: 'News', icon: 'newspaper-o' }} />
+        <NewsScene tabLabel={{ name: 'Devotional', icon: 'newspaper-o' }} />
         <SocialScene tabLabel={{ name: 'Social', icon: 'facebook' }} />
         <DonateScene tabLabel={{ name: 'Donate', icon: 'money' }} />
         <VolunteerScene tabLabel={{ name: 'Volunteer', icon: 'hand-o-up' }} />

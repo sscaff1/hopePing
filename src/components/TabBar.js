@@ -3,30 +3,6 @@ import { TouchableOpacity, StyleSheet, Text, View, Animated } from 'react-native
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { WINDOW_WIDTH } from '../constants';
 
-const styles = StyleSheet.create({
-  tab: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-  },
-  tabs: {
-    height: 50,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    borderTopWidth: 1,
-    borderColor: '#ccc',
-  },
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: WINDOW_WIDTH / 5,
-  },
-  icon: {
-    fontSize: 20,
-  },
-});
-
 export default class TabBar extends Component {
   static propTypes = {
     goToPage: PropTypes.func,
@@ -98,3 +74,27 @@ export default class TabBar extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  tab: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 10,
+  },
+  tabs: {
+    height: 50,
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderTopWidth: 1,
+    borderColor: '#ccc',
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: WINDOW_WIDTH / 5,
+  },
+  icon: {
+    fontSize: 20,
+  },
+});

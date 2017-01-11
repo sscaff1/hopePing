@@ -23,6 +23,7 @@
     "react-native-credit-card-input": "^0.3.3",
     "react-native-feathers-connector": ">=1.0",
     "react-native-scrollable-tab-view": "=0.6.0",
+    "react-native-stripe-api": "0.0.5",
     "react-native-vector-icons": "=3.0.0",
     "socket.io-client": "^1.7.1"
   },

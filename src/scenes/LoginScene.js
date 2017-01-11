@@ -40,7 +40,8 @@ class LoginScene extends Component {
 
   authenticate = (token) => {
     const { feathers } = this.props;
-    return feathers.passport.verifyJWT(token)
+    return feathers.authenticate({ strategy: 'jwt', accessToken: token })
+    .then(({ accessToken }) => feathers.passport.verifyJWT(accessToken))
     .then(payload => feathers.service('users').get(payload.userId))
     .then((user) => {
       feathers.set('user', user);
@@ -93,10 +94,10 @@ class LoginScene extends Component {
     return showLogin && (
       <Image style={styles.wrap} source={HOME_BACKGROUND}>
         <Text style={[styles.headerText, styles.header]}>
-          Hope Ping
-        </Text>
-        <Text style={[styles.headerText, styles.subheading]}>
-          Giving Hope to Those in Need
+          The New Orleans Mission{'\n'}
+          <Text style={[styles.headerText, styles.subheading]}>
+            Rescue &#8226; Recovery &#8226; Reengagement
+          </Text>
         </Text>
         <LinkButton
           onPress={() => this.setAuthUrl('facebook')}
@@ -113,9 +114,11 @@ const styles = StyleSheet.create({
     flex: 1,
     width: null,
     height: null,
-    resizeMode: 'cover',
-    justifyContent: 'center',
+    resizeMode: 'contain',
+    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 40,
+    paddingBottom: 70,
   },
   container: {
     flex: 1,
@@ -124,9 +127,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontFamily: 'JosefinSlab',
     fontWeight: 'bold',
+    textAlign: 'center',
   },
   header: {
-    fontSize: 50,
+    fontSize: 30,
     fontFamily: 'Pacifico',
   },
   subheading: {

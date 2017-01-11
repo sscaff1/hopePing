@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { connectFeathers } from 'react-native-feathers-connector';
+import Stripe from 'react-native-stripe-api';
 import { STRIPE_SERVICE } from '../services';
-import { WINDOW_WIDTH } from '../constants';
+import { WINDOW_WIDTH, GREEN } from '../constants';
 
 class DonateScene extends Component {
   static propTypes = {
@@ -19,6 +20,10 @@ class DonateScene extends Component {
     valid: false,
     formData: '',
   };
+
+  componentWillMount() {
+    console.log(this.props.feathers.get('user'));
+  }
 
   onChange = (formData) => {
     /* eslint no-console: 0 */
@@ -33,9 +38,10 @@ class DonateScene extends Component {
   onSubmit = () => {
     const { feathers } = this.props;
     if (this.state.valid) {
-      feathers.service(STRIPE_SERVICE).create(this.state.formData)
-      .then((response) => {
-        // handle response
+      feathers.service(STRIPE_SERVICE).get()
+      .then((key) => {
+        const client = new Stripe(key);
+        console.log(feathers.get('user'));
       })
       .catch((error) => {
         // handle error
@@ -106,9 +112,9 @@ const styles = StyleSheet.create({
     width: WINDOW_WIDTH * 0.8,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'green',
+    backgroundColor: GREEN,
     alignSelf: 'center',
-    marginTop: 10,
+    marginTop: 20,
     borderRadius: 20,
   },
   submit: {

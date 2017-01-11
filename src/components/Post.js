@@ -3,6 +3,40 @@ import { TouchableOpacity, StyleSheet, Text, View, Image, Linking } from 'react-
 import moment from 'moment/src/moment';
 import { WINDOW_WIDTH } from '../constants';
 
+export default function Post({ url, title, image, snippet, createdAt, source }) {
+  return (
+    <TouchableOpacity style={styles.container} onPress={() => Linking.openURL(url)}>
+      <Text style={styles.title}>{title}</Text>
+      {!!image && (
+        <View style={styles.imageContainer}>
+          <Image source={{ uri: image }} style={styles.image} />
+        </View>
+      )}
+      <Text style={styles.snippet}>{snippet}</Text>
+      <View style={styles.row}>
+        <Text style={styles.date}>{moment(createdAt).fromNow()}</Text>
+        <Text style={styles.topic}>{source}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+Post.propTypes = {
+  url: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  image: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
+  snippet: PropTypes.string,
+  createdAt: PropTypes.string.isRequired,
+  source: PropTypes.string.isRequired,
+};
+
+Post.defaultProps = {
+  source: 'facebook',
+};
+
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -57,37 +91,3 @@ const styles = StyleSheet.create({
     color: '#C1B5C6',
   },
 });
-
-export default function Post({ url, title, image, snippet, createdAt, source }) {
-  return (
-    <TouchableOpacity style={styles.container} onPress={() => Linking.openURL(url)}>
-      <Text style={styles.title}>{title}</Text>
-      {!!image && (
-        <View style={styles.imageContainer}>
-          <Image source={{ uri: image }} style={styles.image} />
-        </View>
-      )}
-      <Text style={styles.snippet}>{snippet}</Text>
-      <View style={styles.row}>
-        <Text style={styles.date}>{moment(createdAt).fromNow()}</Text>
-        <Text style={styles.topic}>{source}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-}
-
-Post.propTypes = {
-  url: PropTypes.string.isRequired,
-  title: PropTypes.string,
-  image: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-  ]),
-  snippet: PropTypes.string,
-  createdAt: PropTypes.string.isRequired,
-  source: PropTypes.string.isRequired,
-};
-
-Post.defaultProps = {
-  source: 'facebook',
-};

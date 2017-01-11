@@ -18,13 +18,11 @@ class SocialScene extends Component {
       loading: true,
       nextPage: undefined,
     };
-    this.getPosts = this.getPosts.bind(this);
     this.posts = [];
-    // componentWillMount
     this.getPosts();
   }
 
-  getPosts() {
+  getPosts = () => {
     const { nextPage } = this.state;
     const query = { nextPage };
     this.props.feathers.service(FEED_SERVICE).find({ query })
@@ -38,18 +36,16 @@ class SocialScene extends Component {
     });
   }
 
-  renderRow(post) {
-    return (
-      <Post
-        url={post.permalink_url}
-        title={post.message}
-        image={post.picture}
-        height={300}
-        width={300}
-        createdAt={post.created_time}
-      />
-    );
-  }
+  renderRow = post => (
+    <Post
+      url={post.permalink_url}
+      title={post.message}
+      image={post.picture}
+      height={300}
+      width={300}
+      createdAt={post.created_time}
+    />
+  );
 
   render() {
     if (this.state.loading) {

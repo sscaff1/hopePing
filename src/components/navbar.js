@@ -6,6 +6,35 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+export default function Navbar({ routeBack, title, routeForward, rightLabel }) {
+  return (
+    <View style={styles.navbar}>
+      <TouchableOpacity style={styles.button} onPress={routeBack}>
+        <Text style={styles.sideLabel}>{'<'}</Text>
+      </TouchableOpacity>
+      <Text style={styles.title}>
+        {title}
+      </Text>
+      <TouchableOpacity style={styles.button} onPress={routeForward}>
+        <Text style={[styles.sideLabel, styles.donate]}>
+          {rightLabel}
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+Navbar.propTypes = {
+  routeBack: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+  routeForward: PropTypes.func.isRequired,
+  rightLabel: PropTypes.string.isRequired,
+};
+
+Navbar.defaultProps = {
+  rightLabel: 'Donate',
+};
+
 const styles = StyleSheet.create({
   navbar: {
     flexDirection: 'row',
@@ -42,32 +71,3 @@ const styles = StyleSheet.create({
     top: 5,
   },
 });
-
-export default function Navbar({ routeBack, title, routeForward, rightLabel }) {
-  return (
-    <View style={styles.navbar}>
-      <TouchableOpacity style={styles.button} onPress={routeBack}>
-        <Text style={styles.sideLabel}>{'<'}</Text>
-      </TouchableOpacity>
-      <Text style={styles.title}>
-        {title}
-      </Text>
-      <TouchableOpacity style={styles.button} onPress={routeForward}>
-        <Text style={[styles.sideLabel, styles.donate]}>
-          {rightLabel}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-Navbar.propTypes = {
-  routeBack: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  routeForward: PropTypes.func.isRequired,
-  rightLabel: PropTypes.string.isRequired,
-};
-
-Navbar.defaultProps = {
-  rightLabel: 'Donate',
-};

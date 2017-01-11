@@ -9,24 +9,20 @@ class NewsScene extends Component {
     feathers: PropTypes.object.isRequired,
   };
 
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      articles: new ListView.DataSource({
-        rowHasChanged: (r1, r2) => r1 !== r2,
-      }),
-      articleRows: [],
-      page: 0,
-      loading: true,
-    };
-    this.getMoreNews = this.getMoreNews.bind(this);
+  state = {
+    articles: new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2,
+    }),
+    articleRows: [],
+    page: 0,
+    loading: true,
   }
 
   componentWillMount() {
     this.getMoreNews();
   }
 
-  getMoreNews() {
+  getMoreNews = () => {
     const { page, articleRows } = this.state;
     const query = { page };
     this.props.feathers.service(NEWS_SERVICE).find({ query })
@@ -42,7 +38,7 @@ class NewsScene extends Component {
     .catch(error => console.log(error));
   }
 
-  renderRow(article) {
+  renderRow = (article) => {
     const hasImages = article.multimedia.length > 0;
     const uri = hasImages && `https://www.nytimes.com/${article.multimedia[0].url}`;
     const height = hasImages && article.multimedia[0].height;
