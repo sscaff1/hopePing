@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Text, WebView, Modal, Image, AsyncStorage } from 'react-native';
+import { StyleSheet, View, Text, WebView, Modal, Image } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { Header, Title, Button, Icon } from 'native-base';
 import { connectFeathers } from 'react-native-feathers-connector';
@@ -16,23 +16,19 @@ class LoginScene extends Component {
   state = {
     authUrl: '',
     webViewVisible: false,
-    showLogin: true,
+    showLogin: false,
   };
 
   componentWillMount() {
     const { feathers } = this.props;
-    AsyncStorage.getItem('jwt', (error, result) => {
-      if (result) {
-        return feathers.passport.verifyJWT(result)
-        .then(payload => feathers.service('users').get(payload.userId))
-        .then((user) => {
-          feathers.set('user', user);
-          this.props.navigator.resetTo('HomeScene');
-        })
-        .catch(() => this.logout());
-      }
-      return this.logout();
-    });
+    return feathers.authenticate()
+    .then(({ accessToken }) => feathers.passport.verifyJWT(accessToken))
+    .then(payload => feathers.service('users').get(payload.userId))
+    .then((user) => {
+      feathers.set('user', user);
+      this.props.navigator.resetTo('HomeScene');
+    })
+    .catch(this.logout);
   }
 
   setAuthUrl = (destination) => {
@@ -44,7 +40,6 @@ class LoginScene extends Component {
 
   authenticate = (token) => {
     const { feathers } = this.props;
-    AsyncStorage.setItem('jwt', token);
     return feathers.passport.verifyJWT(token)
     .then(payload => feathers.service('users').get(payload.userId))
     .then((user) => {
@@ -106,14 +101,6 @@ class LoginScene extends Component {
         <LinkButton
           onPress={() => this.setAuthUrl('facebook')}
           label="Login With Facebook"
-        />
-        <LinkButton
-          onPress={() => this.setAuthUrl('google')}
-          label="Login With Google"
-        />
-        <LinkButton
-          onPress={() => this.setAuthUrl('linkedin')}
-          label="Login With LinkedIn"
         />
         {this.renderWebView()}
       </Image>

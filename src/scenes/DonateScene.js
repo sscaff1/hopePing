@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PropTypes, Component } from 'react';
 import {
   StyleSheet,
   View,
@@ -6,27 +6,42 @@ import {
   Text,
 } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
+import { connectFeathers } from 'react-native-feathers-connector';
+import { STRIPE_SERVICE } from '../services';
 import { WINDOW_WIDTH } from '../constants';
 
+class DonateScene extends Component {
+  static propTypes = {
+    feathers: PropTypes.object.isRequired,
+  };
 
-export default class DonateScene extends Component {
   state = {
     valid: false,
     formData: '',
-  }
+  };
+
   onChange = (formData) => {
     /* eslint no-console: 0 */
     if (formData.valid) {
       this.setState({
         valid: true,
-        formData: JSON.stringify(formData.values),
-      }, () => console.log(this.state));
+        formData: formData.values,
+      });
     }
   };
 
-  onFocus = (field) => {
-    /* eslint no-console: 0 */
-    // console.log(field);
+  onSubmit = () => {
+    const { feathers } = this.props;
+    if (this.state.valid) {
+      feathers.service(STRIPE_SERVICE).create(this.state.formData)
+      .then((response) => {
+        // handle response
+      })
+      .catch((error) => {
+        // handle error
+      });
+    }
+    return null;
   };
 
   validatePostalCode = (code) => {
@@ -41,7 +56,7 @@ export default class DonateScene extends Component {
       return 'invalid';
     }
     return 'incomplete';
-  }
+  };
 
   render() {
     const { valid } = this.state;
@@ -59,17 +74,20 @@ export default class DonateScene extends Component {
           placeholderColor={'darkgray'}
           cardScale={0.8}
           validatePostalCode={this.validatePostalCode}
-
-          onFocus={this.onFocus}
           onChange={this.onChange}
         />
-        <TouchableOpacity style={[styles.submitButton, !valid && styles.disabled]}>
+        <TouchableOpacity
+          onPress={this.onSubmit}
+          style={[styles.submitButton, !valid && styles.disabled]}
+        >
           <Text style={styles.submit}>Donate</Text>
         </TouchableOpacity>
       </View>
     );
   }
 }
+
+export default connectFeathers(DonateScene);
 
 const styles = StyleSheet.create({
   container: {
