@@ -7,6 +7,11 @@ import { FEED_SERVICE } from '../services';
 class SocialScene extends Component {
   static propTypes = {
     feathers: PropTypes.object.isRequired,
+    fromOrganization: PropTypes.bool.isRequired,
+  };
+
+  static defaultProps = {
+    fromOrganization: false,
   };
 
   constructor(props, context) {
@@ -23,8 +28,9 @@ class SocialScene extends Component {
   }
 
   getPosts = () => {
+    const { fromOrganization } = this.props;
     const { nextPage } = this.state;
-    const query = { nextPage };
+    const query = { nextPage, fromOrganization };
     this.props.feathers.service(FEED_SERVICE).find({ query })
     .then((result) => {
       this.posts = this.posts.concat(result.data);

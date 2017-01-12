@@ -19,11 +19,8 @@ class DonateScene extends Component {
   state = {
     valid: false,
     formData: '',
+    chargeAmount: 1,
   };
-
-  componentWillMount() {
-    console.log(this.props.feathers.get('user'));
-  }
 
   onChange = (formData) => {
     /* eslint no-console: 0 */
@@ -37,15 +34,17 @@ class DonateScene extends Component {
 
   onSubmit = () => {
     const { feathers } = this.props;
-    if (this.state.valid) {
+    const { valid, formData, chargeAmount } = this.state;
+    if (valid) {
       feathers.service(STRIPE_SERVICE).get()
       .then((key) => {
         const client = new Stripe(key);
-        console.log(feathers.get('user'));
+        const number = formData.number.replace(' ', '');
+        const [expMonth, expYear] = formData.expiry.split('/');
+        return client.createToken(number, expMonth, expYear, formData.cvc);
       })
-      .catch((error) => {
-        // handle error
-      });
+      .then(stripeToken => feathers.service(STRIPE_SERVICE).create({ stripeToken, chargeAmount }))
+      .catch(error => console.log(error));
     }
     return null;
   };
