@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Animated } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Animated, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { WINDOW_WIDTH } from '../constants';
 
@@ -88,6 +88,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     borderTopWidth: 1,
     borderColor: '#ccc',
+    ...Platform.select({
+      ios: {
+        shadowRadius: 10,
+        shadowColor: '#000000',
+        shadowOpacity: 0.8,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   button: {
     alignItems: 'center',

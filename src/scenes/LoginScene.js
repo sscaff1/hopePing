@@ -1,8 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { StyleSheet, View, Text, WebView, Modal, Image } from 'react-native';
+import { StyleSheet, View, Text, WebView, Modal, Image, TouchableOpacity, Platform } from 'react-native';
 import CookieManager from 'react-native-cookies';
-import { Header, Title, Button, Icon } from 'native-base';
 import { connectFeathers } from 'react-native-feathers-connector';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LinkButton, Loading } from '../components';
 
 const HOME_BACKGROUND = require('../img/hope.png');
@@ -72,12 +72,14 @@ class LoginScene extends Component {
         visible={webViewVisible}
       >
         <View style={styles.container}>
-          <Header iconRight>
-            <Title>Social Login</Title>
-            <Button transparent onPress={() => this.setState({ webViewVisible: false })}>
+          <View style={styles.socialHeader}>
+            <Text style={styles.title}>
+              Facebook Login
+            </Text>
+            <TouchableOpacity style={styles.close}>
               <Icon name="ios-close" />
-            </Button>
-          </Header>
+            </TouchableOpacity>
+          </View>
           <WebView
             startInLoadingState
             onNavigationStateChange={this.handleWebViewChange}
@@ -138,6 +140,32 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 50,
     fontFamily: 'Pacifico',
+  },
+  socialHeader: {
+    paddingTop: 30,
+    paddingHorizontal: 20,
+    paddingBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowRadius: 10,
+        shadowColor: '#000000',
+        shadowOpacity: 0.8,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
+    backgroundColor: '#FFF',
+  },
+  title: {
+    fontSize: 20,
+    fontFamily: 'IM Fell French Canon SC',
+    alignSelf: 'center',
+  },
+  close: {
+    alignSelf: 'flex-end',
   },
 });
 

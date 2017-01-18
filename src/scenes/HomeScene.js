@@ -1,8 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Header, Title } from 'native-base';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
-import NewsScene from './NewsScene';
 import DonateScene from './DonateScene';
 import AboutScene from './AboutScene';
 import VolunteerScene from './VolunteerScene';
@@ -12,9 +10,9 @@ import { TabBar } from '../components';
 export default function HomeScene() {
   return (
     <View style={styles.container}>
-      <Header>
-        <Title style={styles.header}>The New Orleans Mission</Title>
-      </Header>
+      <View style={styles.header}>
+        <Text style={styles.title}>The New Orleans Mission</Text>
+      </View>
       <ScrollableTabView
         style={styles.scrollview}
         renderTabBar={props => <TabBar {...props} />}
@@ -38,6 +36,24 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   header: {
+    paddingTop: 30,
+    paddingBottom: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...Platform.select({
+      ios: {
+        shadowRadius: 10,
+        shadowColor: '#000000',
+        shadowOpacity: 0.8,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
+    backgroundColor: '#FFF',
+  },
+  title: {
+    fontSize: 20,
     fontFamily: 'IM Fell French Canon SC',
   },
 });

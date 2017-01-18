@@ -8,6 +8,7 @@ import {
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { connectFeathers } from 'react-native-feathers-connector';
 import Stripe from 'react-native-stripe-api';
+import { DonateAmount } from '../components';
 import { STRIPE_SERVICE } from '../services';
 import { WINDOW_WIDTH, GREEN } from '../constants';
 
@@ -19,7 +20,6 @@ class DonateScene extends Component {
   state = {
     valid: false,
     formData: '',
-    chargeAmount: 1,
   };
 
   onChange = (formData) => {
@@ -34,7 +34,8 @@ class DonateScene extends Component {
 
   onSubmit = () => {
     const { feathers } = this.props;
-    const { valid, formData, chargeAmount } = this.state;
+    const { valid, formData } = this.state;
+    const chargeAmount = this.donate.getAmount();
     if (valid) {
       feathers.service(STRIPE_SERVICE).get()
       .then((key) => {
@@ -44,6 +45,7 @@ class DonateScene extends Component {
         return client.createToken(number, expMonth, expYear, formData.cvc);
       })
       .then(stripeToken => feathers.service(STRIPE_SERVICE).create({ stripeToken, chargeAmount }))
+      .then(result => console.log(result))
       .catch(error => console.log(error));
     }
     return null;
@@ -63,10 +65,14 @@ class DonateScene extends Component {
     return 'incomplete';
   };
 
+  goToSpecialMessage = () => {
+    this.props.navigator
+  }
+
   render() {
     const { valid } = this.state;
     return (
-      <View style={styles.container}>
+      <View>
         <CreditCardInput
           autoFocus
           requiresName
@@ -77,10 +83,11 @@ class DonateScene extends Component {
           validColor={'black'}
           invalidColor={'red'}
           placeholderColor={'darkgray'}
-          cardScale={0.8}
+          cardScale={0.6}
           validatePostalCode={this.validatePostalCode}
           onChange={this.onChange}
         />
+        <DonateAmount ref={ref => (this.donate = ref)} />
         <TouchableOpacity
           onPress={this.onSubmit}
           style={[styles.submitButton, !valid && styles.disabled]}
@@ -95,9 +102,6 @@ class DonateScene extends Component {
 export default connectFeathers(DonateScene);
 
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
-  },
   label: {
     color: 'black',
     fontSize: 12,
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   submitButton: {
-    height: 60,
+    height: 50,
     width: WINDOW_WIDTH * 0.8,
     alignItems: 'center',
     justifyContent: 'center',

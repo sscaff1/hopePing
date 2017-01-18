@@ -39,7 +39,8 @@ class SocialScene extends Component {
         loading: false,
         nextPage: result.paging.next,
       });
-    });
+    })
+    .catch(error => console.log(error));
   }
 
   renderRow = post => (
