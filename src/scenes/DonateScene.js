@@ -4,13 +4,17 @@ import {
   View,
   TouchableOpacity,
   Text,
+  Modal,
+  Image,
 } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { connectFeathers } from 'react-native-feathers-connector';
 import Stripe from 'react-native-stripe-api';
-import { DonateAmount } from '../components';
+import { DonateAmount, Loading } from '../components';
 import { STRIPE_SERVICE } from '../services';
-import { WINDOW_WIDTH, GREEN } from '../constants';
+import { WINDOW_WIDTH, WINDOW_HEIGHT, GREEN } from '../constants';
+
+const SUCCESS_PHOTO = require('../img/donate-image.jpg');
 
 class DonateScene extends Component {
   static propTypes = {
@@ -20,7 +24,15 @@ class DonateScene extends Component {
   state = {
     valid: false,
     formData: '',
+    loaderVisible: false,
+    showSuccess: false,
   };
+
+  componentWillUnmount() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+  }
 
   onChange = (formData) => {
     /* eslint no-console: 0 */
@@ -37,18 +49,26 @@ class DonateScene extends Component {
     const { valid, formData } = this.state;
     const chargeAmount = this.donate.getAmount();
     if (valid) {
-      feathers.service(STRIPE_SERVICE).get()
-      .then((key) => {
-        const client = new Stripe(key);
-        const number = formData.number.replace(' ', '');
-        const [expMonth, expYear] = formData.expiry.split('/');
-        return client.createToken(number, expMonth, expYear, formData.cvc);
-      })
-      .then(stripeToken => feathers.service(STRIPE_SERVICE).create({ stripeToken, chargeAmount }))
-      .then(result => console.log(result))
-      .catch(error => console.log(error));
+      this.setState({ loaderVisible: true }, () => {
+        feathers.service(STRIPE_SERVICE).get()
+        .then((key) => {
+          const client = new Stripe(key);
+          const number = formData.number.replace(' ', '');
+          const [expMonth, expYear] = formData.expiry.split('/');
+          return client.createToken(number, expMonth, expYear, formData.cvc);
+        })
+        .then(stripeToken => feathers.service(STRIPE_SERVICE).create({ stripeToken, chargeAmount }))
+        .then(() => {
+          this.setState({ showSuccess: true }, () => {
+            this.timer = setTimeout(() => {
+              this.timer = null;
+              this.setState({ showSuccess: false, loaderVisible: false });
+            }, 3000);
+          });
+        })
+        .catch(error => console.log(error));
+      });
     }
-    return null;
   };
 
   validatePostalCode = (code) => {
@@ -65,8 +85,23 @@ class DonateScene extends Component {
     return 'incomplete';
   };
 
-  goToSpecialMessage = () => {
-    this.props.navigator
+  renderLoader = () => {
+    const { loaderVisible, showSuccess } = this.state;
+    return (
+      <Modal
+        animationType="fade"
+        transparent
+        visible={loaderVisible}
+      >
+        <View style={styles.loading}>
+          {showSuccess ? (
+            <Image style={styles.successPicture} source={SUCCESS_PHOTO} />
+          ) : (
+            <Loading />
+          )}
+        </View>
+      </Modal>
+    );
   }
 
   render() {
@@ -94,6 +129,7 @@ class DonateScene extends Component {
         >
           <Text style={styles.submit}>Donate</Text>
         </TouchableOpacity>
+        {this.renderLoader()}
       </View>
     );
   }
@@ -126,5 +162,21 @@ const styles = StyleSheet.create({
   },
   disabled: {
     backgroundColor: 'lightgray',
+  },
+  loading: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    flexDirection: 'row',
+    width: WINDOW_WIDTH,
+    height: WINDOW_HEIGHT,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+  },
+  successPicture: {
+    alignSelf: 'center',
+    flex: 1,
+    width: null,
+    height: null,
+    resizeMode: 'contain',
   },
 });

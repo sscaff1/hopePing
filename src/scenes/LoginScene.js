@@ -4,6 +4,7 @@ import CookieManager from 'react-native-cookies';
 import { connectFeathers } from 'react-native-feathers-connector';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { LinkButton, Loading } from '../components';
+import { WINDOW_WIDTH } from '../constants';
 
 const HOME_BACKGROUND = require('../img/hope.png');
 
@@ -73,11 +74,15 @@ class LoginScene extends Component {
       >
         <View style={styles.container}>
           <View style={styles.socialHeader}>
+            <View style={styles.side} />
             <Text style={styles.title}>
               Facebook Login
             </Text>
-            <TouchableOpacity style={styles.close}>
-              <Icon name="ios-close" />
+            <TouchableOpacity
+              style={styles.side}
+              onPress={() => this.setState({ webViewVisible: false })}
+            >
+              <Icon name="close" style={styles.icon} />
             </TouchableOpacity>
           </View>
           <WebView
@@ -145,8 +150,6 @@ const styles = StyleSheet.create({
     paddingTop: 30,
     paddingHorizontal: 20,
     paddingBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
     ...Platform.select({
       ios: {
         shadowRadius: 10,
@@ -158,14 +161,22 @@ const styles = StyleSheet.create({
       },
     }),
     backgroundColor: '#FFF',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 20,
     fontFamily: 'IM Fell French Canon SC',
     alignSelf: 'center',
   },
-  close: {
-    alignSelf: 'flex-end',
+  icon: {
+    fontSize: 25,
+  },
+  side: {
+    width: WINDOW_WIDTH / 4,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
 });
 
