@@ -30,7 +30,7 @@ function HomeScene({ feathers, navigator }) {
       >
         <SocialScene tabLabel={{ name: 'Devotional', icon: 'ios-book-outline' }} />
         <SocialScene tabLabel={{ name: 'Social', icon: 'logo-facebook' }} fromOrganization />
-        <DonateScene tabLabel={{ name: 'Donate', icon: 'ios-heart-outline' }} />
+        <DonateScene tabLabel={{ name: 'Donate', icon: 'ios-heart-outline' }} navigator={navigator} />
         <VolunteerScene tabLabel={{ name: 'Volunteer', icon: 'ios-people-outline' }} />
         <AboutScene tabLabel={{ name: 'About Us', icon: 'md-information' }} />
       </ScrollableTabView>

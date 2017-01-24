@@ -6,6 +6,7 @@ import {
   Text,
   Modal,
   Image,
+  LayoutAnimation,
 } from 'react-native';
 import { CreditCardInput } from 'react-native-credit-card-input';
 import { connectFeathers } from 'react-native-feathers-connector';
@@ -14,11 +15,12 @@ import { DonateAmount, Loading } from '../components';
 import { STRIPE_SERVICE } from '../services';
 import { WINDOW_WIDTH, WINDOW_HEIGHT, GREEN } from '../constants';
 
-const SUCCESS_PHOTO = require('../img/donate-image.jpg');
+const SUCCESS_PHOTO = require('../img/donate-image.png');
 
 class DonateScene extends Component {
   static propTypes = {
     feathers: PropTypes.object.isRequired,
+    navigator: PropTypes.object.isRequired,
   };
 
   state = {
@@ -45,7 +47,7 @@ class DonateScene extends Component {
   };
 
   onSubmit = () => {
-    const { feathers } = this.props;
+    const { feathers, navigator } = this.props;
     const { valid, formData } = this.state;
     const chargeAmount = this.donate.getAmount();
     if (valid) {
@@ -59,10 +61,12 @@ class DonateScene extends Component {
         })
         .then(stripeToken => feathers.service(STRIPE_SERVICE).create({ stripeToken, chargeAmount }))
         .then(() => {
+          LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
           this.setState({ showSuccess: true }, () => {
             this.timer = setTimeout(() => {
               this.timer = null;
-              this.setState({ showSuccess: false, loaderVisible: false });
+              navigator.resetTo('LoginScene');
+              navigator.replace('HomeScene');
             }, 3000);
           });
         })
@@ -174,9 +178,7 @@ const styles = StyleSheet.create({
   },
   successPicture: {
     alignSelf: 'center',
-    flex: 1,
-    width: null,
-    height: null,
+    width: WINDOW_WIDTH,
     resizeMode: 'contain',
   },
 });
