@@ -4,6 +4,7 @@ import CookieManager from 'react-native-cookies';
 import { connectFeathers } from 'react-native-feathers-connector';
 import { Pacifico, Sans } from '../fonts';
 import { LinkButton, Loading, Header } from '../components';
+import { ENDPOINT } from '../constants';
 
 const HOME_BACKGROUND = require('../img/hope.png');
 
@@ -33,7 +34,7 @@ class LoginScene extends Component {
 
   setAuthUrl = (destination) => {
     this.setState({
-      authUrl: `http://localhost:3030/auth/${destination}`,
+      authUrl: `${ENDPOINT}/auth/${destination}`,
       webViewVisible: true,
     });
   }
