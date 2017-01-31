@@ -134,10 +134,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   header: {
-    fontSize: WINDOW_WIDTH / 15,
+    fontSize: WINDOW_WIDTH / 18,
   },
   subheading: {
-    fontSize: WINDOW_WIDTH / 20,
+    fontSize: WINDOW_WIDTH / 23,
   },
 });
 

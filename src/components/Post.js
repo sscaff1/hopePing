@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     }),
   },
   title: {
-    fontSize: WINDOW_WIDTH / 25,
+    fontSize: WINDOW_WIDTH / 31,
     lineHeight: 20,
   },
   snippet: {

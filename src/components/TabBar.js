@@ -110,6 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
   },
   tabText: {
-    fontSize: WINDOW_WIDTH / 28,
+    fontSize: WINDOW_WIDTH / 36,
   },
 });

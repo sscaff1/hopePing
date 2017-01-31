@@ -130,6 +130,7 @@ class DonateScene extends Component {
           cardScale={0.6}
           validatePostalCode={this.validatePostalCode}
           onChange={this.onChange}
+          labels={{ expiry: 'EXPIRES' }}
         />
         <DonateAmount
           ref={ref => (this.donate = ref)}

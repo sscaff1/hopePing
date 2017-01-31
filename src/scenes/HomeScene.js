@@ -12,7 +12,7 @@ function HomeScene({ feathers, navigator }) {
   return (
     <View style={styles.container}>
       <Header
-        title="The New Orleans Mission"
+        title="New Orleans Mission"
         icon="exit-to-app"
         iconAction={() => Alert.alert(
           'Logout',

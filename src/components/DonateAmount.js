@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     flex: 1.5,
   },
   amountText: {
-    fontSize: 15,
+    fontSize: WINDOW_WIDTH / 28,
   },
   otherBox: {
     flex: 2,

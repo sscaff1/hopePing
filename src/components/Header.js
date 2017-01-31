@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: WINDOW_WIDTH / 20,
+    fontSize: WINDOW_WIDTH / 26,
     alignSelf: 'center',
   },
   icon: {

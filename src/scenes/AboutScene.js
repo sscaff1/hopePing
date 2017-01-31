@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     color: GREEN,
   },
   text: {
-    fontSize: WINDOW_WIDTH / 25,
+    fontSize: WINDOW_WIDTH / 28,
     lineHeight: 20,
     marginVertical: 10,
   },
