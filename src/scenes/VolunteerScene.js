@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, Text, Linking, TouchableOpacity, StyleSheet } from 'react-native';
 import { ContactUs } from '../components';
-import { Sans, Pacifico } from '../fonts';
+import { SecondaryFont, MainFont } from '../fonts';
 import { WINDOW_WIDTH, PURPLE, GREEN } from '../constants';
 
 export default function VolunteerScene() {
@@ -9,10 +9,10 @@ export default function VolunteerScene() {
     <ScrollView
       contentContainerStyle={styles.container}
     >
-      <Pacifico>
+      <MainFont>
         <Text style={styles.header}>Volunteer</Text>
-      </Pacifico>
-      <Sans>
+      </MainFont>
+      <SecondaryFont>
         <Text style={styles.text}>
           Volunteers are vital to the heartbeat of the New Orleans Mission. Our Bridge ministry is an opportunity for groups or individuals to offer help and love to hurting people.{'\n\n'}
 
@@ -20,14 +20,14 @@ export default function VolunteerScene() {
 
           There are so many other opportunities to connect talented individuals with skilled labor. Please submit this form so we can better assess how you can help or call our volunteer coordinator today for details.
         </Text>
-      </Sans>
+      </SecondaryFont>
       <TouchableOpacity
         onPress={() => Linking.openURL('http://www.neworleansmission.org/volunteer/volunteer-today')}
         style={styles.button}
       >
-        <Sans>
+        <SecondaryFont>
           <Text style={styles.buttonText}>VOLUNTEER NOW</Text>
-        </Sans>
+        </SecondaryFont>
       </TouchableOpacity>
       <ContactUs textStyle={styles.text} />
     </ScrollView>
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     color: GREEN,
   },
   text: {
-    fontSize: 18,
+    fontSize: WINDOW_WIDTH / 25,
     lineHeight: 20,
     marginVertical: 10,
   },

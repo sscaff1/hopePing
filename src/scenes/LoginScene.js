@@ -2,9 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { StyleSheet, View, Text, WebView, Modal, Image } from 'react-native';
 import CookieManager from 'react-native-cookies';
 import { connectFeathers } from 'react-native-feathers-connector';
-import { Pacifico, Sans } from '../fonts';
+import { MainFont, SecondaryFont } from '../fonts';
 import { LinkButton, Loading, Header } from '../components';
-import { ENDPOINT } from '../constants';
+import { ENDPOINT, WINDOW_WIDTH, WINDOW_HEIGHT } from '../constants';
 
 const HOME_BACKGROUND = require('../img/hope.png');
 
@@ -94,16 +94,16 @@ class LoginScene extends Component {
     return showLogin && (
       <Image style={styles.wrap} source={HOME_BACKGROUND}>
         <Text style={styles.headerText}>
-          <Pacifico>
+          <MainFont>
             <Text style={styles.header}>
               The New Orleans Mission{'\n'}
             </Text>
-          </Pacifico>
-          <Sans>
+          </MainFont>
+          <SecondaryFont>
             <Text style={styles.subheading}>
               Rescue &#8226; Recovery &#8226; Re-Engagement
             </Text>
-          </Sans>
+          </SecondaryFont>
         </Text>
         <LinkButton
           onPress={() => this.setAuthUrl('facebook')}
@@ -123,8 +123,8 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingTop: 40,
-    paddingBottom: 70,
+    paddingTop: WINDOW_HEIGHT / 18,
+    paddingBottom: WINDOW_HEIGHT / 18,
   },
   container: {
     flex: 1,
@@ -134,10 +134,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   header: {
-    fontSize: 30,
+    fontSize: WINDOW_WIDTH / 15,
   },
   subheading: {
-    fontSize: 20,
+    fontSize: WINDOW_WIDTH / 20,
   },
 });
 

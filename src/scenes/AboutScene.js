@@ -1,18 +1,18 @@
 import React from 'react';
 import { ScrollView, Text, StyleSheet } from 'react-native';
-import { Sans, Pacifico } from '../fonts';
+import { SecondaryFont, MainFont } from '../fonts';
 import { ContactUs } from '../components';
-import { GREEN } from '../constants';
+import { GREEN, WINDOW_WIDTH } from '../constants';
 
 export default function AboutScene() {
   return (
     <ScrollView
       contentContainerStyle={styles.container}
     >
-      <Pacifico>
+      <MainFont>
         <Text style={styles.header}>About Us</Text>
-      </Pacifico>
-      <Sans>
+      </MainFont>
+      <SecondaryFont>
         <Text style={styles.text}>
           Founded in 1989, the New Orleans Mission provided Shelter, Food and Spiritual guidance to a growing number of homeless men who were living on the streets of our city.{'\n\n'}
 
@@ -22,7 +22,7 @@ export default function AboutScene() {
 
           Our strategy is to RESCUE people from homelessness, strengthen the RECOVERY efforts of the people seeking our support, and fostering their successful RE-ENGAGEMENT into society as healthy, disciplined skilled people ready to lead a sustainable productive purpose-driven life.{'\n'}
         </Text>
-      </Sans>
+      </SecondaryFont>
       <ContactUs textStyle={styles.text} />
     </ScrollView>
   );
@@ -30,14 +30,14 @@ export default function AboutScene() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
   },
   header: {
     fontSize: 30,
     color: GREEN,
   },
   text: {
-    fontSize: 18,
+    fontSize: WINDOW_WIDTH / 25,
     lineHeight: 20,
     marginVertical: 10,
   },

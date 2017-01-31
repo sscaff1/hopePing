@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, StyleSheet, Linking, Alert, TouchableOpacity } from 'react-native';
-import { Sans } from '../fonts';
+import { Text, StyleSheet, Linking, Alert } from 'react-native';
+import { SecondaryFont } from '../fonts';
+import { WINDOW_WIDTH } from '../constants';
 
 export default class ContactUs extends Component {
   static propTypes = {
@@ -21,7 +22,7 @@ export default class ContactUs extends Component {
   render() {
     return (
       <Text style={styles.center}>
-        <Sans>
+        <SecondaryFont>
           <Text style={this.props.textStyle}>
             1134 Baronne St., New Orleans, LA 70113{'\n'}
             P.O. Box 56565, New Orleans, LA 70156{'\n'}
@@ -29,7 +30,7 @@ export default class ContactUs extends Component {
             Email: volunteer@neworleansmission.org{'\n'}
             Website: http://www.neworleansmission.org/{'\n'}
           </Text>
-        </Sans>
+        </SecondaryFont>
       </Text>
     );
   }

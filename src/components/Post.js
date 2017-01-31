@@ -1,30 +1,30 @@
 import React, { PropTypes } from 'react';
 import { TouchableOpacity, Platform, StyleSheet, Text, View, Image, Linking } from 'react-native';
 import moment from 'moment/src/moment';
-import { Sans } from '../fonts';
+import { SecondaryFont } from '../fonts';
 import { WINDOW_WIDTH } from '../constants';
 
 export default function Post({ url, title, image, snippet, createdAt, source }) {
   return (
     <TouchableOpacity style={styles.container} onPress={() => Linking.openURL(url)}>
-      <Sans>
+      <SecondaryFont>
         <Text style={styles.title}>{title}</Text>
-      </Sans>
+      </SecondaryFont>
       {!!image && (
         <View style={styles.imageContainer}>
           <Image source={{ uri: image }} style={styles.image} />
         </View>
       )}
-      <Sans>
+      <SecondaryFont>
         <Text style={styles.snippet}>{snippet}</Text>
-      </Sans>
+      </SecondaryFont>
       <View style={styles.row}>
-        <Sans>
+        <SecondaryFont>
           <Text style={styles.date}>{moment(createdAt).fromNow()}</Text>
-        </Sans>
-        <Sans>
+        </SecondaryFont>
+        <SecondaryFont>
           <Text style={styles.topic}>{source}</Text>
-        </Sans>
+        </SecondaryFont>
       </View>
     </TouchableOpacity>
   );
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     }),
   },
   title: {
-    fontSize: 18,
+    fontSize: WINDOW_WIDTH / 25,
     lineHeight: 20,
   },
   snippet: {

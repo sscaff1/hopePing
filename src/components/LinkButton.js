@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
-import { Sans } from '../fonts';
+import { SecondaryFont } from '../fonts';
 import { WINDOW_WIDTH, PURPLE } from '../constants';
 
 export default function LinkButton({ label, onPress, style }) {
   return (
     <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
-      <Sans>
+      <SecondaryFont>
         <Text style={styles.label}>
           {label}
         </Text>
-      </Sans>
+      </SecondaryFont>
     </TouchableOpacity>
   );
 }

@@ -2,6 +2,7 @@ import React, { PropTypes, Component } from 'react';
 import {
   StyleSheet,
   View,
+  ScrollView,
   TouchableOpacity,
   Text,
   Modal,
@@ -75,6 +76,10 @@ class DonateScene extends Component {
     }
   };
 
+  scroll = (focus = true) => {
+    this.scrollView.scrollTo({ y: focus ? WINDOW_WIDTH / 2 : 0 });
+  };
+
   validatePostalCode = (code) => {
     const regex = /\d{5}/g;
     if (!code) {
@@ -111,7 +116,7 @@ class DonateScene extends Component {
   render() {
     const { valid } = this.state;
     return (
-      <View>
+      <ScrollView ref={ref => (this.scrollView = ref)}>
         <CreditCardInput
           autoFocus
           requiresName
@@ -126,7 +131,11 @@ class DonateScene extends Component {
           validatePostalCode={this.validatePostalCode}
           onChange={this.onChange}
         />
-        <DonateAmount ref={ref => (this.donate = ref)} />
+        <DonateAmount
+          ref={ref => (this.donate = ref)}
+          onBlur={() => this.scroll(false)}
+          onFocus={this.scroll}
+        />
         <TouchableOpacity
           onPress={this.onSubmit}
           style={[styles.submitButton, !valid && styles.disabled]}
@@ -134,7 +143,7 @@ class DonateScene extends Component {
           <Text style={styles.submit}>Donate</Text>
         </TouchableOpacity>
         {this.renderLoader()}
-      </View>
+      </ScrollView>
     );
   }
 }

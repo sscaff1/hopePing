@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { TouchableOpacity, StyleSheet, Text, View, Animated, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Sans } from '../fonts';
+import { SecondaryFont } from '../fonts';
 import { WINDOW_WIDTH, PURPLE } from '../constants';
 
 export default class TabBar extends Component {
@@ -38,7 +38,9 @@ export default class TabBar extends Component {
     return (
       <TouchableOpacity key={name} style={styles.button} onPress={() => onPressHandler(page)}>
         <Icon name={icon} style={[styles.icon, { color: textColor, fontWeight }]} />
-        <Sans><Text style={{ color: textColor, fontWeight }}>{name}</Text></Sans>
+        <SecondaryFont>
+          <Text style={[styles.tabText, { color: textColor, fontWeight }]}>{name}</Text>
+        </SecondaryFont>
       </TouchableOpacity>
     );
   }
@@ -108,6 +110,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
   },
   tabText: {
-    fontSize: 15,
+    fontSize: WINDOW_WIDTH / 28,
   },
 });

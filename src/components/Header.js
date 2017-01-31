@@ -1,18 +1,18 @@
 import React, { PropTypes } from 'react';
 import { TouchableOpacity, View, Text, StyleSheet, Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { Pacifico } from '../fonts';
+import { MainFont } from '../fonts';
 import { WINDOW_WIDTH } from '../constants';
 
 export default function Header({ title, iconAction, icon }) {
   return (
     <View style={styles.container}>
       <View style={styles.side} />
-      <Pacifico>
+      <MainFont>
         <Text style={styles.title}>
           {title}
         </Text>
-      </Pacifico>
+      </MainFont>
       <TouchableOpacity
         style={styles.side}
         onPress={iconAction}
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   title: {
-    fontSize: 20,
+    fontSize: WINDOW_WIDTH / 20,
     alignSelf: 'center',
   },
   icon: {

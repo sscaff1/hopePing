@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Text, StyleSheet } from 'react-native';
 
-export default function Sans({ children }) {
+export default function MainFont({ children }) {
   return (
     <Text style={styles.container}>
       {children}
@@ -9,13 +9,13 @@ export default function Sans({ children }) {
   );
 }
 
-Sans.propTypes = {
+MainFont.propTypes = {
   children: PropTypes.any,
 };
 
 const styles = StyleSheet.create({
   container: {
-    fontFamily: 'josefinsans',
+    fontFamily: 'RingBearer',
     fontStyle: 'normal',
   },
 });

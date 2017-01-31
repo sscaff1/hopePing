@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   View,
   Animated,
@@ -25,6 +25,10 @@ const donateAmounts = [
 const lastBox = donateAmounts.length;
 
 export default class DonateAmount extends Component {
+  static propTypes = {
+    onFocus: PropTypes.func.isRequired,
+    onBlur: PropTypes.func.isRequired,
+  }
   state = {
     activeBox: 0,
     inputHeight: new Animated.Value(0),
@@ -95,6 +99,7 @@ export default class DonateAmount extends Component {
 
   render() {
     const { activeBox, inputHeight, inputWidth, inputPadding } = this.state;
+    const { onFocus, onBlur } = this.props;
     return (
       <View>
         <View style={styles.container}>
@@ -118,6 +123,8 @@ export default class DonateAmount extends Component {
         <AnimatedTextInput
           ref={ref => (this.input = ref)}
           style={[styles.input, { height: inputHeight, padding: inputPadding, width: inputWidth }]}
+          onFocus={onFocus}
+          onBlur={onBlur}
           keyboardType="numeric"
         />
       </View>

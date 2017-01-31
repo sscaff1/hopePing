@@ -1,2 +1,2 @@
-export Sans from './Sans';
-export Pacifico from './Pacifico';
+export SecondaryFont from './SecondaryFont';
+export MainFont from './MainFont';
