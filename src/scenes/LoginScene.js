@@ -96,7 +96,7 @@ class LoginScene extends Component {
         <Text style={styles.headerText}>
           <MainFont>
             <Text style={styles.header}>
-              The New Orleans Mission{'\n'}
+              New Orleans Mission{'\n'}
             </Text>
           </MainFont>
           <SecondaryFont>
@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   header: {
-    fontSize: WINDOW_WIDTH / 18,
+    fontSize: WINDOW_WIDTH / 15,
   },
   subheading: {
     fontSize: WINDOW_WIDTH / 23,
