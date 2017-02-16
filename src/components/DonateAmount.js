@@ -16,9 +16,9 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 
 const donateAmounts = [
   { amount: '$1' },
-  { amount: '$2' },
   { amount: '$5' },
   { amount: '$10' },
+  { amount: '$20' },
   { amount: 'Other' },
 ];
 
@@ -41,11 +41,11 @@ export default class DonateAmount extends Component {
       case 0:
         return 100;
       case 1:
-        return 200;
-      case 2:
         return 500;
+      case 2:
+        return 10000;
       case 3:
-        return 1000;
+        return 20000;
       case 4:
       default:
         return this.input.value;
