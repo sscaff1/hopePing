@@ -43,9 +43,9 @@ export default class DonateAmount extends Component {
       case 1:
         return 500;
       case 2:
-        return 10000;
+        return 1000;
       case 3:
-        return 20000;
+        return 2000;
       case 4:
       default:
         return this.input.value;
