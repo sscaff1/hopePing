@@ -58,8 +58,8 @@ class LoginScene extends Component {
 
   handleWebViewChange = (url) => {
     if (url.url.indexOf('/success') > -1) {
-      CookieManager.getAll((error, cookie) => {
-        this.authenticate(cookie['feathers-jwt'].value);
+      CookieManager.get(`${ENDPOINT}/success`, (error, cookie) => {
+        this.authenticate(cookie['feathers-jwt']);
         this.setState({ webViewVisible: false });
       });
     }
@@ -71,6 +71,7 @@ class LoginScene extends Component {
       <Modal
         animationType="slide"
         visible={webViewVisible}
+        onRequestClose={() => this.setState({ webViewVisible: false })}
       >
         <View style={styles.container}>
           <Header

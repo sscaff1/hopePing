@@ -101,6 +101,7 @@ class DonateScene extends Component {
         animationType="fade"
         transparent
         visible={loaderVisible}
+        onRequestClose={() => this.setState({ loaderVisible: false })}
       >
         <View style={styles.loading}>
           {showSuccess ? (
